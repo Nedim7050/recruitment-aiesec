@@ -1,0 +1,801 @@
+/* AIESEC Carthage Recruitment Theme Customizations */
+
+  /* Brand Colors */
+  :root {
+    --aiesec-blue: #037EF3;
+    --aiesec-blue-dark: #0266c5;
+    --aiesec-white: #ffffff;
+    --aiesec-light: #f5f7fa; /* light gray bg */
+  }
+  
+  .probootstrap-header-top {
+    background: var(--aiesec-blue);
+    color: #ffffff;
+  }
+  .probootstrap-header-top .probootstrap-top-quick-contact-info span,
+  .probootstrap-header-top .probootstrap-top-quick-contact-info i,
+  .probootstrap-header-top .probootstrap-top-social a {
+    color: #ffffff;
+  }
+  .probootstrap-header-top .probootstrap-top-social a:hover {
+    opacity: 0.85;
+  }
+
+/* Global */
+body {
+  background-color: #ffffff;
+}
+
+  /* Modern Navbar styling */
+  .probootstrap-navbar, .navbar-default {
+    border: none;
+    background-color: #fff;
+    box-shadow: 0 2px 20px rgba(3, 126, 243, 0.15);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin-bottom: 0;
+    z-index: 1000;
+    position: relative;
+  }
+  
+  .navbar-default.scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 30px rgba(3, 126, 243, 0.25);
+  }
+  
+  .navbar-default .navbar-brand,
+  .navbar-default .navbar-nav>li>a {
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .navbar-default .navbar-nav>li>a {
+    padding: 15px 20px;
+    margin: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    line-height: 70px;
+  }
+  
+  .navbar-default .navbar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+  }
+  .navbar-default .navbar-brand:hover,
+  .navbar-default .navbar-nav>li>a:hover,
+  .navbar-default .navbar-nav>li.active>a {
+    color: var(--aiesec-blue) !important;
+    transform: translateY(-2px);
+  }
+  
+  .navbar-default .navbar-nav>li>a:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 15px;
+    left: 50%;
+    background-color: var(--aiesec-blue);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  
+  .navbar-default .navbar-nav>li>a:hover:after,
+  .navbar-default .navbar-nav>li.active>a:after {
+    width: 80%;
+  }
+  
+  /* Perfect navbar alignment with centered logo */
+  @media (min-width: 768px) {
+    .navbar-default .navbar-header {
+      float: left;
+      position: relative;
+    }
+    
+    .navbar-default .navbar-collapse {
+      float: right;
+      width: auto;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .navbar-default .navbar-nav {
+      float: left;
+      margin: 0;
+    }
+    
+    .navbar-default .navbar-nav > li {
+      float: left;
+    }
+    
+    /* Center the logo in the space between navbar and hero */
+    .navbar-default .navbar-brand {
+      position: relative;
+    }
+    
+    .navbar-default .navbar-brand::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--aiesec-blue), transparent);
+      z-index: 10;
+      opacity: 0.3;
+    }
+  }
+  
+  .navbar-default .navbar-toggle {
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+  }
+  
+  .navbar-default .navbar-toggle:hover {
+    background-color: rgba(3, 126, 243, 0.1);
+  }
+  .navbar-default .navbar-toggle .icon-bar {
+    background-color: var(--aiesec-blue);
+    height: 3px;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  
+  .navbar-default .navbar-toggle:hover .icon-bar {
+    background-color: var(--aiesec-blue-dark);
+  }
+  
+  .navbar-default .navbar-toggle {
+    margin-top: 18px;
+    margin-bottom: 18px;
+  }
+  
+  /* Brand logo sizing - Force correct display */
+  .navbar-default .navbar-brand {
+    padding: 15px 20px;
+    margin-right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 70px;
+    line-height: 70px;
+    position: relative;
+  }
+  
+  /* Center logo in the space between navbar and hero */
+  .navbar-default .navbar-brand::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 30px;
+    background: transparent;
+    z-index: 10;
+  }
+  
+  .navbar-default .navbar-brand img {
+    display: inline-block !important;
+    height: 40px !important;
+    width: auto !important;
+    margin-top: -4px !important;
+    background: transparent !important;
+    border: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+  
+  /* Override any navbar brand styling that might affect the logo */
+  .navbar-default .navbar-brand {
+    background: transparent !important;
+    color: inherit !important;
+  }
+  
+  .navbar-default .navbar-brand:hover,
+  .navbar-default .navbar-brand:focus {
+    background: transparent !important;
+    color: inherit !important;
+  }
+  
+  /* Force logo display - Ultimate fix */
+  .navbar-brand img[src*="Blue-Logo-removebg-preview"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    filter: none !important;
+    background: none !important;
+    border: none !important;
+    max-width: none !important;
+    max-height: none !important;
+    width: auto !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    z-index: 999 !important;
+  }
+
+/* Hero (replace flexslider look to match AIESEC) */
+.hero-aiesec {
+  position: relative;
+  min-height: 80vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+.hero-aiesec:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(3,126,243,0.55), rgba(3,126,243,0.25)), rgba(0,0,0,0.25);
+}
+.hero-aiesec .hero-inner {
+  position: relative;
+  z-index: 2;
+}
+  .hero-aiesec h1 {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  }
+  .hero-aiesec p.lead {
+    font-size: 18px;
+    opacity: 1;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+  }
+.btn-aiesec {
+  background: var(--aiesec-blue);
+  border-color: var(--aiesec-blue);
+  color: #fff;
+  transition: all .2s ease;
+}
+  .btn-aiesec:hover {
+    background: var(--aiesec-blue-dark);
+    border-color: var(--aiesec-blue-dark);
+    color: #fff;
+  }
+  
+  .btn-login {
+    background: transparent;
+    border-color: var(--aiesec-blue);
+    color: var(--aiesec-blue);
+    transition: all .2s ease;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+  }
+  .btn-login:hover {
+    background: var(--aiesec-blue);
+    border-color: var(--aiesec-blue);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(3, 126, 243, 0.2);
+  }
+
+/* Section tweaks */
+.section-light {
+  background: var(--aiesec-light);
+}
+.section-heading h2 span.brand {
+  color: var(--aiesec-blue);
+}
+
+/* Icon cards */
+  .value-card, .benefit-card, .op-card, .journey-step {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 8px 22px rgba(18, 38, 63, 0.06);
+    padding: 24px;
+    height: 100%;
+    min-height: 250px;
+    transition: transform .2s ease, box-shadow .2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+.value-card:hover, .benefit-card:hover, .op-card:hover, .journey-step:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(18, 38, 63, 0.12);
+}
+.value-card .icon, .benefit-card .icon, .op-card .icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3,126,243,0.1);
+  color: var(--aiesec-blue);
+  margin-bottom: 16px;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.value-card h4, .benefit-card h4, .op-card h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+  line-height: 1.3;
+}
+
+.value-card p, .benefit-card p, .op-card p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* AIESEC Counter Styling */
+.probootstrap-counter-wrap .probootstrap-icon i {
+  color: #037EF3 !important;
+}
+
+.probootstrap-counter-wrap .probootstrap-text .probootstrap-counter {
+  color: #037EF3 !important;
+  font-weight: 700;
+}
+
+.probootstrap-counter-wrap .probootstrap-text .probootstrap-counter-label {
+  color: #666 !important;
+  font-weight: 500;
+}
+
+/* Why Join AIESEC Carthage Background Styling */
+.why-join-bg {
+  position: relative;
+  padding: 80px 0;
+}
+
+.why-join-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 1;
+}
+
+.why-join-bg .container {
+  position: relative;
+  z-index: 2;
+}
+
+.blur-overlay {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 40px 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.blur-overlay h2 {
+  color: var(--aiesec-blue);
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.blur-overlay .lead {
+  color: #333;
+  font-size: 18px;
+  line-height: 1.6;
+  font-style: italic;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* AIESEC Routines Tab Styling */
+.probootstrap-tabs.nav-tabs > li.active > a,
+.probootstrap-tabs.nav-tabs > li.active > a:hover,
+.probootstrap-tabs.nav-tabs > li.active > a:focus {
+  background-color: #037EF3 !important;
+  border-color: #037EF3 !important;
+  color: #ffffff !important;
+}
+
+.probootstrap-tabs.nav-tabs > li > a {
+  background-color: #ffffff;
+  border-color: #ddd;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.probootstrap-tabs.nav-tabs > li > a:hover {
+  background-color: rgba(3, 126, 243, 0.1);
+  border-color: #037EF3;
+  color: #037EF3;
+}
+
+.probootstrap-tabs.nav-tabs > li > a:focus {
+  background-color: rgba(3, 126, 243, 0.1);
+  border-color: #037EF3;
+  color: #037EF3;
+}
+
+/* AIESEC Routines Cards Alignment */
+.probootstrap-featured-news-box {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.probootstrap-featured-news-box .probootstrap-text {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.probootstrap-featured-news-box .probootstrap-text h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.3;
+}
+
+.probootstrap-featured-news-box .probootstrap-text p {
+  margin-bottom: 15px;
+  color: #666;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.probootstrap-featured-news-box .probootstrap-media {
+  height: 200px;
+  overflow: hidden;
+}
+
+.probootstrap-featured-news-box .probootstrap-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.probootstrap-featured-news-box:hover .probootstrap-media img {
+  transform: scale(1.05);
+}
+
+.probootstrap-featured-news-box .probootstrap-date,
+.probootstrap-featured-news-box .probootstrap-location {
+  font-size: 14px;
+  color: #999;
+  margin-top: auto;
+}
+
+.probootstrap-featured-news-box .probootstrap-date i,
+.probootstrap-featured-news-box .probootstrap-location i {
+  margin-right: 5px;
+  color: #037EF3;
+}
+
+/* Leadership Journey Alignment */
+.journey {
+  display: flex;
+  align-items: stretch;
+}
+
+.journey .col-md-3 {
+  display: flex;
+  flex-direction: column;
+}
+
+.journey-step {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+}
+
+.journey-step .badge {
+  flex-shrink: 0;
+  margin-bottom: 15px;
+}
+
+.journey-step h4 {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+.journey-step p {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+/* Why Join AIESEC Carthage Cards Styling */
+.why-join-bg .benefit-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.why-join-bg .benefit-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 1);
+}
+
+.why-join-bg .benefit-card .icon {
+  background: rgba(3, 126, 243, 0.15);
+  color: #037EF3;
+  border: 2px solid rgba(3, 126, 243, 0.2);
+}
+
+.why-join-bg .benefit-card h4 {
+  color: #037EF3;
+  font-weight: 700;
+}
+
+.why-join-bg .benefit-card p {
+  color: #555;
+  font-weight: 500;
+}
+
+
+/* Gallery overrides */
+.aiesec-gallery .owl-dots .owl-dot span, .owl-theme .owl-dots .owl-dot span {
+  background: rgba(3,126,243,0.35);
+}
+.aiesec-gallery .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot.active span {
+  background: var(--aiesec-blue);
+}
+
+/* Testimonials */
+.probootstrap-testimonial.aiesec-testimonial:before {
+  background: rgba(3,126,243,0.5);
+}
+
+/* Timeline / Journey */
+.journey {
+  position: relative;
+}
+.journey:before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--aiesec-blue);
+  transform: translateX(-50%);
+}
+.journey .journey-step {
+  position: relative;
+}
+.journey .journey-step .badge {
+  background: var(--aiesec-blue);
+}
+
+/* Footer */
+.probootstrap-footer, .probootstrap-footer.probootstrap-bg {
+  background: #0c1b2a;
+  color: #c9d3df;
+}
+.probootstrap-footer h3 { color: #ffffff; }
+.probootstrap-footer a { color: #c9d3df; }
+.probootstrap-footer a:hover { color: #ffffff; }
+.probootstrap-copyright {
+  background: #08121d;
+}
+
+/* Smooth scroll offset for fixed nav */
+[id] { scroll-margin-top: 80px; }
+
+/* Utility */
+  .text-brand { color: var(--aiesec-blue); }
+  .bg-brand { background: var(--aiesec-blue); color: #fff; }
+  
+  /* Floating Apply CTA */
+  .floating-apply {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 999;
+  }
+  .floating-apply .btn {
+    box-shadow: 0 10px 22px rgba(3,126,243,0.35);
+    transition: all 0.3s ease;
+  }
+  .floating-apply .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(3,126,243,0.45);
+  }
+  @media (min-width: 992px) {
+    .floating-apply { right: 24px; bottom: 24px; }
+  }
+  
+  /* Form Validation Styles */
+  .form-group.has-error .form-control {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25);
+  }
+  .error-message {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+  .alert {
+    border-radius: 8px;
+    border: none;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+  }
+  
+  /* Loading States */
+  .btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  .icon-spinner2 {
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Enhanced Mobile Touch Interactions */
+  @media (max-width: 768px) {
+    .btn {
+      min-height: 44px; /* iOS touch target minimum */
+      padding: 12px 20px;
+    }
+    .floating-apply .btn {
+      min-height: 50px;
+      padding: 15px 25px;
+      font-size: 16px; /* Prevent zoom on iOS */
+    }
+    .form-control {
+      font-size: 16px; /* Prevent zoom on iOS */
+      padding: 12px 15px;
+    }
+  }
+  
+  /* Accessibility Improvements */
+  .required {
+    color: #e74c3c;
+    font-weight: bold;
+  }
+  .form-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+  }
+  .form-control:focus {
+    border-color: var(--aiesec-blue);
+    box-shadow: 0 0 0 0.2rem rgba(3, 126, 243, 0.25);
+  }
+  .btn:focus {
+    outline: 2px solid var(--aiesec-blue);
+    outline-offset: 2px;
+  }
+  
+  /* Skip to content link for screen readers */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--aiesec-blue);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 1000;
+  }
+  .skip-link:focus {
+    top: 6px;
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .btn-aiesec {
+      border: 2px solid #000;
+    }
+    .form-control {
+      border: 2px solid #000;
+    }
+  }
+  
+  /* Lazy loading styles */
+  .lazy-load {
+    background-color: #f8f9fa;
+    background-image: linear-gradient(90deg, #f0f0f0 25%, transparent 25%), 
+                      linear-gradient(#f0f0f0 50%, transparent 50%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px;
+    transition: background-image 0.3s ease;
+  }
+  .lazy-loaded {
+    background-image: none;
+  }
+  
+  /* Performance optimizations */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  .probootstrap-image {
+    will-change: transform;
+  }
+  
+  /* Video iframe styling */
+  .probootstrap-image iframe {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 1;
+  }
+  
+  /* Leadership Model Shape Styling */
+  .leadership-model-shape {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 20px 0;
+  }
+  
+  .leadership-model-title {
+    color: #037EF3 !important;
+    font-weight: 600 !important;
+    margin-bottom: 15px;
+  }
+  
+  .leadership-model-subtitle {
+    color: #333333 !important;
+    font-weight: 400 !important;
+    margin: 0;
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .icon-spinner2 {
+      animation: none;
+    }
+  }
