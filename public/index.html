@@ -96,6 +96,32 @@
         display: block !important;
         visibility: visible !important;
     }
+    
+    /* Ensure workshops tab content is properly displayed */
+    #upcoming-events {
+        display: none !important;
+    }
+    
+    #upcoming-events.in.active {
+        display: block !important;
+    }
+    
+    #upcoming-events .owl-carousel {
+        display: block !important;
+        visibility: visible !important;
+    }
+    
+    #upcoming-events .owl-item {
+        display: block !important;
+        visibility: visible !important;
+    }
+    
+    #upcoming-events img {
+        display: block !important;
+        visibility: visible !important;
+        max-width: 100% !important;
+        height: auto !important;
+    }
     </style>
     
     <!-- Preload critical resources -->
@@ -983,9 +1009,10 @@
         // Initialize carousels when tabs are activated
         console.log('Tab system initialized');
         
-        // Initialize the conferences carousel on page load
+        // Initialize both carousels on page load
         setTimeout(function() {
             if (typeof jQuery.fn.owlCarousel !== 'undefined') {
+                // Initialize conferences carousel
                 jQuery('#owl1').owlCarousel({
                     items: 3,
                     loop: true,
@@ -1002,8 +1029,26 @@
                     }
                 });
                 console.log('Conferences carousel initialized');
+                
+                // Initialize workshops carousel (but keep it hidden initially)
+                jQuery('#owl2').owlCarousel({
+                    items: 3,
+                    loop: true,
+                    margin: 20,
+                    nav: false,
+                    dots: true,
+                    smartSpeed: 800,
+                    autoHeight: true,
+                    responsive:{
+                        0:{ items:1 },
+                        400:{ items:1 },
+                        600:{ items:2 },
+                        1000:{ items:3 }
+                    }
+                });
+                console.log('Workshops carousel initialized');
             }
-        }, 500);
+        }, 1000);
         
         // Manual tab initialization as fallback
         jQuery('a[data-toggle="tab"]').on('click', function(e) {
@@ -1025,14 +1070,12 @@
                 console.log('Workshops tab activated');
                 
                 setTimeout(function() {
-                    // Initialize workshops carousel
-                    if (typeof jQuery.fn.owlCarousel !== 'undefined') {
-                        // Destroy existing carousel if it exists
-                        if (jQuery('#owl2').data('owlCarousel')) {
-                            jQuery('#owl2').data('owlCarousel').destroy();
-                        }
-                        
-                        // Initialize new carousel
+                    // Refresh workshops carousel if needed
+                    if (jQuery('#owl2').data('owlCarousel')) {
+                        jQuery('#owl2').trigger('refresh.owl.carousel');
+                        console.log('Workshops carousel refreshed');
+                    } else {
+                        // Initialize if not already done
                         jQuery('#owl2').owlCarousel({
                             items: 3,
                             loop: true,
@@ -1048,7 +1091,7 @@
                                 1000:{ items:3 }
                             }
                         });
-                        console.log('Workshops carousel initialized successfully');
+                        console.log('Workshops carousel initialized on tab click');
                     }
                     
                     // Force reload and check images
