@@ -1,19 +1,6 @@
+# Ignore these files from Vercel deployment
 node_modules
 .git
-*.log
-.env
-.env.local
-.env.production.local
-.env.development.local
-scss
-gulpfile.js
-*.md
-README*
-GUIDE*
-INSTRUCTIONS*
-DEPLOYMENT*
-CONFIGURATION*
-TROUBLESHOOTING*
-TEST*
-apps-script*
-contact-backend*
+.gitignore
+README.md
+DEPLOYMENT.md
