@@ -1,13 +1,23 @@
 {
   "name": "aiesec-carthage-website",
   "version": "1.0.0",
-  "description": "AIESEC Carthage recruitment website",
-  "main": "index.html",
+  "description": "AIESEC Carthage recruitment website with Tally integration",
+  "main": "public/index.html",
   "scripts": {
     "build": "echo 'Static site - no build needed'",
-    "start": "echo 'Static site - no start needed'"
+    "start": "echo 'Static site - serve public directory'"
   },
-  "keywords": ["aiesec", "carthage", "recruitment", "static", "website"],
+  "keywords": [
+    "aiesec",
+    "carthage",
+    "tunisia",
+    "recruitment",
+    "leadership"
+  ],
   "author": "AIESEC Carthage",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nedim7050/recruitment-aiesec.git"
+  }
 }
