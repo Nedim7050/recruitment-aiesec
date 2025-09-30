@@ -1,5 +1,5 @@
 // Configuration
-const GOOGLE_SHEETS_API = 'https://script.google.com/macros/s/AKfycbxo3a4Monbjv0Pg_UnCSKNNH54aFQjOHSc2IEEreyMsXJBecTQEy4s83IRWdFblPD3g/exec';
+const GOOGLE_SHEETS_API = 'https://script.google.com/macros/s/AKfycbz-jgAxjw8fWp7ZkVbd9smlWBdkM3dX2AuovkqnnWviRqzu6gtNChNdTmfWdM2NiDr0/exec';
 
 // Fonction de test de connectivité
 async function testConnection() {
@@ -32,12 +32,7 @@ async function submitToGoogleSheets(formData) {
             const sheetData = {
                 name: formData.name,
                 email: formData.email,
-                phone: formData.phone,
-                university: formData.university,
-                age: formData.age,
-                level: formData.level,
-                motivation: formData.motivation,
-                freeSpace: formData.freeSpace,
+                message: formData.message,
                 device: {
                     type: formData.device,
                     userAgent: navigator.userAgent
@@ -70,12 +65,7 @@ async function submitToGoogleSheets(formData) {
             const fields = {
                 'name': formData.name,
                 'email': formData.email,
-                'phone': formData.phone,
-                'university': formData.university,
-                'age': formData.age,
-                'level': formData.level,
-                'motivation': formData.motivation,
-                'freeSpace': formData.freeSpace,
+                'message': formData.message,
                 'device': JSON.stringify({
                     type: formData.device,
                     userAgent: navigator.userAgent
@@ -103,15 +93,15 @@ async function submitToGoogleSheets(formData) {
             
             // Fallback: Sauvegarder en localStorage en cas d'échec
             try {
-                const existingData = JSON.parse(localStorage.getItem('aiesec_candidates') || '[]');
-                const candidateData = {
+                const existingData = JSON.parse(localStorage.getItem('aiesec_contacts') || '[]');
+                const contactData = {
                     ...formData,
                     id: Date.now(),
                     timestamp: new Date().toISOString()
                 };
-                existingData.push(candidateData);
-                localStorage.setItem('aiesec_candidates', JSON.stringify(existingData));
-                console.log('💾 Données sauvegardées en localStorage comme fallback');
+                existingData.push(contactData);
+                localStorage.setItem('aiesec_contacts', JSON.stringify(existingData));
+                console.log('💾 Données de contact sauvegardées en localStorage comme fallback');
             } catch (storageError) {
                 console.error('❌ Erreur localStorage:', storageError);
             }
@@ -122,30 +112,25 @@ async function submitToGoogleSheets(formData) {
 
 // Gestionnaire du formulaire
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('recruitment-form');
+    const form = document.getElementById('contact-form');
     
     if (!form) {
-        console.error('❌ Formulaire non trouvé');
+        console.error('❌ Formulaire de contact non trouvé');
         return;
     }
     
-    console.log('✅ Formulaire trouvé, configuration en cours...');
+    console.log('✅ Formulaire de contact trouvé, configuration en cours...');
     
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        console.log('🚀 Soumission du formulaire démarrée');
+        console.log('🚀 Soumission du formulaire de contact démarrée');
         
         // Récupérer les données du formulaire
         const formData = {
             name: document.getElementById('name').value.trim(),
             email: document.getElementById('email').value.trim(),
-            phone: document.getElementById('phone').value.trim(),
-            university: document.getElementById('university').value.trim(),
-            age: parseInt(document.getElementById('age').value),
-            level: document.getElementById('level').value.trim(),
-            motivation: document.getElementById('motivation').value.trim(),
-            freeSpace: document.getElementById('free-space').value.trim(),
+            message: document.getElementById('message').value.trim(),
             device: getDeviceType(),
             timestamp: new Date().toISOString()
         };
@@ -153,8 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('📊 Données du formulaire:', formData);
         
         // Validation
-        if (!formData.name || !formData.email || !formData.phone || !formData.university || 
-            !formData.age || !formData.level || !formData.motivation) {
+        if (!formData.name || !formData.email || !formData.message) {
             alert('❌ Veuillez remplir tous les champs obligatoires');
             return;
         }
@@ -171,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (result.success) {
                 // Succès
-                submitBtn.innerHTML = '<i class="icon-checkmark"></i> Envoyé avec succès !';
+                submitBtn.innerHTML = '<i class="icon-checkmark"></i> Message envoyé !';
                 submitBtn.className = 'btn btn-success btn-lg';
                 
                 // Afficher message de succès
@@ -179,8 +163,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 successMessage.className = 'alert alert-success mt-3';
                 successMessage.innerHTML = `
                     <i class="icon-checkmark"></i> 
-                    <strong>Merci !</strong> Votre candidature a été enregistrée avec succès dans notre système.<br>
-                    <small>Nous vous contacterons bientôt via email ou téléphone.</small>
+                    <strong>Merci !</strong> Votre message a été envoyé avec succès.<br>
+                    <small>Nous vous répondrons bientôt via email.</small>
                 `;
                 form.appendChild(successMessage);
                 
@@ -193,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     successMessage.remove();
                 }, 3000);
                 
-                console.log('✅ Candidature enregistrée avec succès');
+                console.log('✅ Message de contact envoyé avec succès');
                 
             } else {
                 throw new Error(result.error || 'Erreur inconnue');
@@ -211,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
             errorMessage.className = 'alert alert-danger mt-3';
             errorMessage.innerHTML = `
                 <i class="icon-cross"></i> 
-                <strong>Erreur !</strong> Impossible d'enregistrer votre candidature.<br>
+                <strong>Erreur !</strong> Impossible d'envoyer votre message.<br>
                 <small>Veuillez vérifier votre connexion internet et réessayer. Si le problème persiste, contactez-nous directement.</small>
             `;
             form.appendChild(errorMessage);

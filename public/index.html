@@ -807,7 +807,8 @@
           <div class="row">
             <div class="col-md-12">
               <h2 class="probootstrap-animate" data-animate-effect="fadeInRight">Ready to start?</h2>
-              <a href="#apply" role="button" class="btn btn-aiesec btn-lg btn-ghost probootstrap-animate" data-animate-effect="fadeInLeft">Apply Now</a>
+              <a href="https://tally.so/r/wboKKE?fbclid=IwY2xjawNI2GZleHRuA2FlbQIxMABicmlkETFBUW82NGlLZ2JMVmNjTHkwAR6XMhRyLANIMgd9tfvT_q_25uA2ee37HTOmirsjm9_lvU2vz4Xlw75_uXNi3g_aem_SH_QxjrHSJyGm5ui1WMu-A" target="_blank" role="button" class="btn btn-aiesec btn-lg btn-ghost probootstrap-animate" data-animate-effect="fadeInLeft">Join AIESEC Carthage</a>
+              <a href="#apply" role="button" class="btn btn-aiesec btn-lg btn-ghost probootstrap-animate" data-animate-effect="fadeInLeft" style="margin-left: 20px;">Contact Us</a>
             </div>
           </div>
         </div>
@@ -816,81 +817,46 @@
         <div class="container">
           <div class="row">
             <div class="col-md-6 col-md-offset-3 text-center section-heading probootstrap-animate">
-              <h2>Recruitment Form</h2>
-                <p class="lead">Fill in your details and we'll reach out soon.</p>
+              <h2>Contact Us</h2>
+                <p class="lead">Have a question or need information? Get in touch with us.</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <!-- Formulaire avec stockage local uniquement (pas d'envoi externe) -->
-                <form id="recruitment-form" class="probootstrap-animate" role="form" aria-labelledby="apply-heading">
+                <!-- Formulaire de contact simple -->
+                <form id="contact-form" class="probootstrap-animate" role="form" aria-labelledby="contact-heading">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="name">Name <span class="required" aria-label="required">*</span></label>
                       <input type="text" class="form-control" id="name" name="name" placeholder="Your full name" required aria-describedby="name-help">
-                      <small id="name-help" class="form-text text-muted">Enter your full legal name</small>
+                      <small id="name-help" class="form-text text-muted">Enter your full name</small>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="email">Email <span class="required" aria-label="required">*</span></label>
                       <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required aria-describedby="email-help">
-                      <small id="email-help" class="form-text text-muted">We'll use this to contact you</small>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="phone">Phone <span class="required" aria-label="required">*</span></label>
-                      <input type="tel" class="form-control" id="phone" name="phone" placeholder="+216 ..." required aria-describedby="phone-help">
-                      <small id="phone-help" class="form-text text-muted">Include country code</small>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="university">University <span class="required" aria-label="required">*</span></label>
-                      <input type="text" class="form-control" id="university" name="university" placeholder="Your university" required aria-describedby="university-help">
-                      <small id="university-help" class="form-text text-muted">Current or most recent university</small>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="age">Age <span class="required" aria-label="required">*</span></label>
-                      <input type="number" class="form-control" id="age" name="age" placeholder="Your age" min="16" max="30" required aria-describedby="age-help">
-                      <small id="age-help" class="form-text text-muted">Must be between 16 and 30 years old</small>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="level">Level of Study <span class="required" aria-label="required">*</span></label>
-                      <input type="text" class="form-control" id="level" name="level" placeholder="e.g., Bachelor, Master, PhD, High School, etc." required aria-describedby="level-help">
-                      <small id="level-help" class="form-text text-muted">Your current academic level (be specific)</small>
+                      <small id="email-help" class="form-text text-muted">We'll use this to contact you back</small>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="motivation">Motivation <span class="required" aria-label="required">*</span></label>
-                      <textarea class="form-control" id="motivation" name="motivation" rows="5" placeholder="Why do you want to join AIESEC?" required aria-describedby="motivation-help"></textarea>
-                      <small id="motivation-help" class="form-text text-muted">Tell us what drives you to join our community</small>
-                    </div>
-                  </div>
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label for="free-space">Free Space (Optional)</label>
-                      <textarea class="form-control" id="free-space" name="free-space" rows="3" placeholder="Any additional questions or information you'd like to share?" aria-describedby="free-space-help"></textarea>
-                      <small id="free-space-help" class="form-text text-muted">Feel free to ask any questions or share additional information</small>
+                      <label for="message">Message <span class="required" aria-label="required">*</span></label>
+                      <textarea class="form-control" id="message" name="message" rows="6" placeholder="Tell us how we can help you or ask any questions you have about AIESEC Carthage..." required aria-describedby="message-help"></textarea>
+                      <small id="message-help" class="form-text text-muted">Share your questions, requests, or any information you need</small>
                     </div>
                   </div>
                   <div class="col-md-12 text-center">
-                    <button type="submit" class="btn btn-aiesec btn-lg" aria-describedby="submit-help">Join AIESEC Carthage</button>
-                    <small id="submit-help" class="form-text text-muted d-block mt-2">By submitting, you agree to be contacted by AIESEC Carthage</small>
+                    <button type="submit" class="btn btn-aiesec btn-lg" aria-describedby="submit-help">Send Message</button>
+                    <small id="submit-help" class="form-text text-muted d-block mt-2">We'll get back to you as soon as possible</small>
                   </div>
                 </div>
                 
-                <!-- Formspree Hidden Fields -->
-                <input type="hidden" name="_subject" value="New AIESEC Carthage Application">
+                <!-- Hidden Fields for form submission -->
+                <input type="hidden" name="_subject" value="New Contact Form Submission - AIESEC Carthage">
                 <input type="hidden" name="_replyto" value="">
-                <input type="hidden" name="_next" value="https://your-domain.vercel.app/thank-you">
+                <input type="hidden" name="_next" value="https://aiesec-carthage.org/thank-you">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="_template" value="table">
               </form>
