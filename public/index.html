@@ -90,26 +90,8 @@
     <link rel="stylesheet" href="css/style.min.css?v=2025-01-30">
     <link rel="stylesheet" href="css/custom.css?v=2025-01-30">
     
-    <!-- Custom CSS for workshops section -->
+    <!-- Custom CSS for improved styling -->
     <style>
-    #upcoming-events {
-        display: block !important;
-        opacity: 1 !important;
-    }
-    #upcoming-events .owl-carousel {
-        display: block !important;
-        visibility: visible !important;
-    }
-    #upcoming-events .item {
-        display: block !important;
-        visibility: visible !important;
-    }
-    #upcoming-events img {
-        display: block !important;
-        visibility: visible !important;
-        max-width: 100% !important;
-        height: auto !important;
-    }
     .probootstrap-featured-news-box {
         display: block !important;
         visibility: visible !important;
@@ -807,43 +789,58 @@
           <div class="row">
             <div class="col-md-12 text-center">
               <h2 class="probootstrap-animate" data-animate-effect="fadeInRight">Ready to start?</h2>
-              <div class="cta-buttons-wrapper" style="margin-top: 40px;">
-                <div class="main-cta-button">
+              
+              <!-- Boutons alignés horizontalement -->
+              <div class="cta-buttons-container" style="margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                
+                <!-- Bouton principal Join AIESEC -->
+                <div class="main-cta-section">
                   <a href="https://tally.so/r/wboKKE?fbclid=IwY2xjawNI2GZleHRuA2FlbQIxMABicmlkETFBUW82NGlLZ2JMVmNjTHkwAR6XMhRyLANIMgd9tfvT_q_25uA2ee37HTOmirsjm9_lvU2vz4Xlw75_uXNi3g_aem_SH_QxjrHSJyGm5ui1WMu-A" target="_blank" role="button" class="btn btn-primary btn-lg probootstrap-animate" data-animate-effect="fadeInLeft" style="
                     background: linear-gradient(135deg, #037ef3 0%, #0056b3 100%);
                     border: none;
-                    padding: 18px 40px;
+                    padding: 20px 50px;
                     font-weight: 700;
-                    font-size: 18px;
-                    border-radius: 12px;
-                    box-shadow: 0 8px 25px rgba(3, 126, 243, 0.4);
-                    transition: all 0.3s ease;
+                    font-size: 20px;
+                    border-radius: 15px;
+                    box-shadow: 0 10px 30px rgba(3, 126, 243, 0.5);
+                    transition: all 0.4s ease;
                     text-transform: uppercase;
-                    letter-spacing: 1px;
-                    margin-bottom: 15px;
+                    letter-spacing: 2px;
                     display: inline-block;
-                    min-width: 250px;
-                  " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 35px rgba(3, 126, 243, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(3, 126, 243, 0.4)';">Join AIESEC</a>
+                    min-width: 280px;
+                    color: white;
+                    text-decoration: none;
+                  " onmouseover="this.style.transform='translateY(-5px) scale(1.05)'; this.style.boxShadow='0 15px 40px rgba(3, 126, 243, 0.7)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 30px rgba(3, 126, 243, 0.5)';">Join AIESEC</a>
+                  
                   <p class="probootstrap-animate" data-animate-effect="fadeInLeft" style="
-                    margin-top: 15px; 
+                    margin-top: 20px; 
                     color: rgba(255,255,255,0.95); 
                     font-size: 16px; 
                     font-weight: 400;
-                    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+                    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+                    margin-bottom: 0;
                   ">Fill the form to join the AIESEC community</p>
                 </div>
-                <div class="secondary-cta-button" style="margin-top: 30px;">
-                  <a href="#apply" role="button" class="btn btn-outline-light btn-lg probootstrap-animate" data-animate-effect="fadeInLeft" style="
-                    padding: 12px 30px;
-                    border-radius: 8px;
-                    border: 2px solid rgba(255,255,255,0.8);
+
+                <!-- Bouton Contact Us aligné -->
+                <div class="secondary-cta-section">
+                  <a href="#apply" role="button" class="btn btn-lg probootstrap-animate" data-animate-effect="fadeInLeft" style="
+                    padding: 15px 40px;
+                    border-radius: 12px;
+                    border: 3px solid rgba(255,255,255,0.9);
                     color: white;
                     font-weight: 600;
-                    transition: all 0.3s ease;
-                    background: rgba(255,255,255,0.1);
-                    backdrop-filter: blur(10px);
-                  " onmouseover="this.style.background='rgba(255,255,255,0.2)'; this.style.borderColor='white';" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255,255,255,0.8)';">Contact Us</a>
+                    font-size: 16px;
+                    transition: all 0.4s ease;
+                    background: rgba(255,255,255,0.15);
+                    backdrop-filter: blur(15px);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    min-width: 200px;
+                    text-decoration: none;
+                  " onmouseover="this.style.background='rgba(255,255,255,0.25)'; this.style.borderColor='white'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(255,255,255,0.3)';" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.borderColor='rgba(255,255,255,0.9)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">Contact Us</a>
                 </div>
+                
               </div>
             </div>
           </div>
@@ -976,48 +973,8 @@
         console.log('jQuery loaded:', typeof jQuery !== 'undefined');
         console.log('Bootstrap tabs available:', typeof jQuery.fn.tab !== 'undefined');
         
-        // Force show workshops content on page load
-        setTimeout(function() {
-            jQuery('#upcoming-events').show().css({
-                'display': 'block',
-                'opacity': '1',
-                'visibility': 'visible'
-            });
-            console.log('Workshops content forced to show');
-            
-            // Force load images
-            jQuery('#upcoming-events img').each(function() {
-                var img = jQuery(this);
-                var src = img.attr('src');
-                console.log('Forcing image load:', img.attr('alt'), src);
-                
-                // Test if image URL is accessible
-                var testImg = new Image();
-                testImg.onload = function() {
-                    console.log('Image URL is accessible:', src);
-                    img.attr('src', src);
-                };
-                testImg.onerror = function() {
-                    console.log('Image URL failed:', src, 'using fallback');
-                    var fallbackMap = {
-                        'LC Meetings': 'https://res.cloudinary.com/dfgycmek8/image/upload/v1759146864/Screenshot_2025-09-29_125354_bd1iv6.png',
-                        'Working Hours': 'https://res.cloudinary.com/dfgycmek8/image/upload/v1759147433/WH_gw1ptg.jpg',
-                        'Recruitement RCR': 'https://res.cloudinary.com/dfgycmek8/image/upload/v1759147434/rcr_akduic.jpg'
-                    };
-                    var fallback = fallbackMap[img.attr('alt')];
-                    if (fallback) {
-                        img.attr('src', fallback);
-                    }
-                };
-                testImg.src = src;
-                
-                img.css({
-                    'display': 'block !important',
-                    'visibility': 'visible !important',
-                    'opacity': '1 !important'
-                });
-            });
-        }, 500);
+        // Initialize carousels when tabs are activated
+        console.log('Tab system initialized');
         
         // Manual tab initialization as fallback
         jQuery('a[data-toggle="tab"]').on('click', function(e) {
@@ -1037,13 +994,6 @@
             // Trigger custom events for carousel initialization
             if (target === '#upcoming-events') {
                 console.log('Workshops tab activated');
-                
-                // Force show the workshops content
-                jQuery('#upcoming-events').show().css({
-                    'display': 'block',
-                    'opacity': '1',
-                    'visibility': 'visible'
-                });
                 
                 setTimeout(function() {
                     // Force initialize carousel
