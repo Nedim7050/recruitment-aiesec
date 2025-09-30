@@ -98,11 +98,15 @@
     }
     
     /* Ensure workshops tab content is properly displayed */
-    #upcoming-events {
-        display: none !important;
+    .tab-pane {
+        display: none;
     }
     
-    #upcoming-events.in.active {
+    .tab-pane.active {
+        display: block !important;
+    }
+    
+    .tab-pane.fade.in.active {
         display: block !important;
     }
     
@@ -1000,82 +1004,51 @@
     <script src="js/form-handler.js?v=2025-01-30-final"></script>
     <script src="https://player.vimeo.com/api/player.js"></script>
     
-    <!-- Debug script for tabs -->
+    <!-- Simplified script for tabs and carousels -->
     <script>
     jQuery(document).ready(function() {
-        console.log('jQuery loaded:', typeof jQuery !== 'undefined');
-        console.log('Bootstrap tabs available:', typeof jQuery.fn.tab !== 'undefined');
+        console.log('Initializing tabs and carousels...');
         
-        // Initialize carousels when tabs are activated
-        console.log('Tab system initialized');
+        // Initialize conferences carousel immediately
+        if (typeof jQuery.fn.owlCarousel !== 'undefined') {
+            jQuery('#owl1').owlCarousel({
+                items: 3,
+                loop: true,
+                margin: 20,
+                nav: false,
+                dots: true,
+                smartSpeed: 800,
+                autoHeight: true,
+                responsive:{
+                    0:{ items:1 },
+                    600:{ items:2 },
+                    1000:{ items:3 }
+                }
+            });
+            console.log('Conferences carousel initialized');
+        }
         
-        // Initialize both carousels on page load
-        setTimeout(function() {
-            if (typeof jQuery.fn.owlCarousel !== 'undefined') {
-                // Initialize conferences carousel
-                jQuery('#owl1').owlCarousel({
-                    items: 3,
-                    loop: true,
-                    margin: 20,
-                    nav: false,
-                    dots: true,
-                    smartSpeed: 800,
-                    autoHeight: true,
-                    responsive:{
-                        0:{ items:1 },
-                        400:{ items:1 },
-                        600:{ items:2 },
-                        1000:{ items:3 }
-                    }
-                });
-                console.log('Conferences carousel initialized');
-                
-                // Initialize workshops carousel (but keep it hidden initially)
-                jQuery('#owl2').owlCarousel({
-                    items: 3,
-                    loop: true,
-                    margin: 20,
-                    nav: false,
-                    dots: true,
-                    smartSpeed: 800,
-                    autoHeight: true,
-                    responsive:{
-                        0:{ items:1 },
-                        400:{ items:1 },
-                        600:{ items:2 },
-                        1000:{ items:3 }
-                    }
-                });
-                console.log('Workshops carousel initialized');
-            }
-        }, 1000);
-        
-        // Manual tab initialization as fallback
+        // Handle tab clicks
         jQuery('a[data-toggle="tab"]').on('click', function(e) {
             e.preventDefault();
             var target = jQuery(this).attr('href');
             console.log('Tab clicked:', target);
             
-            // Hide all tab panes
-            jQuery('.tab-pane').removeClass('in active');
-            // Show target tab pane
-            jQuery(target).addClass('in active');
-            
-            // Update active tab
+            // Remove active class from all tabs and panes
             jQuery('.nav-tabs li').removeClass('active');
-            jQuery(this).parent().addClass('active');
+            jQuery('.tab-pane').removeClass('active in');
             
-            // Trigger custom events for carousel initialization
+            // Add active class to clicked tab and target pane
+            jQuery(this).parent().addClass('active');
+            jQuery(target).addClass('active in');
+            
+            // Initialize workshops carousel when workshops tab is clicked
             if (target === '#upcoming-events') {
-                console.log('Workshops tab activated');
-                
+                console.log('Workshops tab activated - initializing carousel');
                 setTimeout(function() {
-                    // Refresh workshops carousel if needed
                     if (jQuery('#owl2').data('owlCarousel')) {
                         jQuery('#owl2').trigger('refresh.owl.carousel');
-                        console.log('Workshops carousel refreshed');
                     } else {
-                        // Initialize if not already done
                         jQuery('#owl2').owlCarousel({
                             items: 3,
                             loop: true,
@@ -1086,65 +1059,17 @@
                             autoHeight: true,
                             responsive:{
                                 0:{ items:1 },
-                                400:{ items:1 },
                                 600:{ items:2 },
                                 1000:{ items:3 }
                             }
                         });
-                        console.log('Workshops carousel initialized on tab click');
                     }
-                    
-                    // Force reload and check images
-                    jQuery('#owl2 img').each(function() {
-                        var img = jQuery(this);
-                        var originalSrc = img.attr('src');
-                        console.log('Checking image:', img.attr('alt'), 'src:', originalSrc);
-                        
-                        // Force image reload
-                        img.attr('src', '');
-                        setTimeout(function() {
-                            img.attr('src', originalSrc);
-                        }, 100);
-                        
-                        img.css({
-                            'display': 'block !important',
-                            'visibility': 'visible !important',
-                            'opacity': '1 !important',
-                            'width': '100% !important',
-                            'height': '200px !important',
-                            'object-fit': 'cover !important'
-                        });
-                        
-                        // Check if image loads
-                        img.on('load', function() {
-                            console.log('Image loaded successfully:', img.attr('alt'));
-                        });
-                        
-                        img.on('error', function() {
-                            console.log('Image failed to load:', img.attr('alt'), 'trying fallback');
-                            // Try fallback images
-                            var fallbackMap = {
-                                'LC Meetings': 'https://res.cloudinary.com/dfgycmek8/image/upload/v1759146864/Screenshot_2025-09-29_125354_bd1iv6.png',
-                                'Working Hours': 'https://res.cloudinary.com/dfgycmek8/image/upload/v1759147433/WH_gw1ptg.jpg',
-                                'Recruitement RCR': 'https://res.cloudinary.com/dfgycmek8/image/upload/v1759147434/rcr_akduic.jpg'
-                            };
-                            var fallback = fallbackMap[img.attr('alt')];
-                            if (fallback) {
-                                img.attr('src', fallback);
-                                console.log('Loaded fallback image:', fallback);
-                            }
-                        });
-                    });
-                }, 200);
-            } else if (target === '#featured-news') {
-                console.log('Conferences tab activated');
-                setTimeout(function() {
-                    if (typeof initialize_owl === 'function') {
-                        initialize_owl(jQuery('#owl1'));
-                    }
-                }, 100);
+                    console.log('Workshops carousel ready');
+                }, 300);
             }
         });
+        
+        console.log('Tab system ready');
     });
     </script>
 
