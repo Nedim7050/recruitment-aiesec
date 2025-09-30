@@ -7,18 +7,19 @@ const CACHE_NAME = 'aiesec-carthage-v1.0.0';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/login.html',
+  '/dashboard.html',
+  '/thank-you.html',
   '/css/styles-merged.css',
   '/css/style.min.css',
   '/css/custom.css',
   '/js/scripts.min.js',
   '/js/main.min.js',
   '/js/custom.js',
-  '/img/logo.png',
-  '/img/slider_1.jpg',
-  '/img/slider_2.jpg',
-  '/img/slider_3.jpg',
-  '/img/slider_4.jpg',
-  'https://fonts.googleapis.com/css?family=Raleway:300,400,500,700|Open+Sans'
+  '/manifest.json',
+  'https://fonts.googleapis.com/css?family=Raleway:300,400,500,700|Open+Sans',
+  'https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png',
+  'https://res.cloudinary.com/dfgycmek8/image/upload/v1759068747/Blue-Logo_yo9rwt.jpg'
 ];
 
 // Install event - cache resources

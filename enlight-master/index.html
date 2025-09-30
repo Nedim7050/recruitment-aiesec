@@ -10,7 +10,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
     <title>AIESEC Carthage &mdash; Join Your Leadership Journey</title>
     <meta name="description" content="Join AIESEC Carthage for global leadership opportunities, internships abroad, and personal development. Apply now for life-changing experiences in Tunisia.">
     <meta name="keywords" content="AIESEC, Carthage, Tunisia, leadership, internships, global volunteer, study abroad, youth development, international exchange">
@@ -77,20 +77,26 @@
       src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
     /></noscript>
     
-    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,700|Open+Sans" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,700|Open+Sans&display=swap" rel="stylesheet">
     <link rel="icon" href="https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png" type="image/png" sizes="16x16 32x32 48x48">
     <link rel="shortcut icon" href="https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png" type="image/png">
     <link rel="apple-touch-icon" href="https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png" sizes="180x180">
     <link rel="stylesheet" href="css/styles-merged.css">
     <link rel="stylesheet" href="css/style.min.css">
-    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/custom.css?v=2.0">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="img/logo.png" as="image">
-    <link rel="preload" href="img/slider_1.jpg" as="image">
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+    <link rel="preload" href="https://res.cloudinary.com/dfgycmek8/image/upload/v1759069163/Blue-Logo-removebg-preview_dkax8j.png" as="image">
+    <link rel="preload" href="https://res.cloudinary.com/dfgycmek8/image/upload/c_scale,w_1920,f_auto,q_auto/v1759065609/background_site_rcr_aiesec_vk87wu.jpg" as="image">
+    <link rel="preload" href="css/styles-merged.css" as="style">
+    <link rel="preload" href="css/style.min.css" as="style">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//www.googletagmanager.com">
     <link rel="dns-prefetch" href="//connect.facebook.net">
+    <link rel="dns-prefetch" href="//res.cloudinary.com">
 
     <!--[if lt IE 9]>
       <script src="js/vendor/html5shiv.min.js"></script>
@@ -116,7 +122,7 @@
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3 probootstrap-top-social">
               <ul>
-                <li><a href="https://www.facebook.com/share/g/19eFg9KPAZ/" target="_blank"><i class="icon-facebook2"></i></a></li>
+                <li><a href="https://www.facebook.com/groups/3352377071567444" target="_blank"><i class="icon-facebook2"></i></a></li>
                 <li><a href="https://www.instagram.com/connectwithcarthage?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="icon-instagram2"></i></a></li>
                 <li><a href="https://www.instagram.com/aiesecintunisia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="icon-instagram2"></i></a></li>
                 <li><a href="https://www.youtube.com/@aieseccarthage5405" target="_blank"><i class="icon-youtube"></i></a></li>
@@ -144,7 +150,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li class="active"><a href="#home">Home</a></li>
               <li><a href="#about">About</a></li>
-              <li><a href="#why">Why Join</a></li>
+              <li><a href="#why">Why</a></li>
               <li><a href="#events">Events</a></li>
               <li><a href="#opportunities">Opportunities</a></li>
               <li><a href="#community">Community</a></li>
@@ -157,7 +163,7 @@
       </nav>
 
       <main id="main-content">
-      <section id="home" class="hero-aiesec" style="background-image: url('https://res.cloudinary.com/dfgycmek8/image/upload/v1759065609/background_site_rcr_aiesec_vk87wu.jpg');" role="banner" aria-label="Hero section">
+      <section id="home" class="hero-aiesec" style="background-image: url('https://res.cloudinary.com/dfgycmek8/image/upload/c_scale,w_1920,f_auto,q_auto:good/v1759065609/background_site_rcr_aiesec_vk87wu.jpg');" role="banner" aria-label="Hero section">
         <div class="container hero-inner">
               <div class="row">
             <div class="col-md-10 col-md-offset-1 text-center">
@@ -207,6 +213,7 @@
                         frameborder="0" 
                         allow="autoplay; fullscreen; picture-in-picture" 
                         title="This Is AIESEC"
+                        loading="lazy"
                         style="border-radius: 8px; background: #000;">
                 </iframe>
               </div>
@@ -227,7 +234,7 @@
                     </div>
                   </div>
             <div class="col-md-6 probootstrap-animate">
-              <div class="probootstrap-image" style="background-image: url('https://res.cloudinary.com/dfgycmek8/image/upload/v1759143334/image_2025-09-29_115529920_jc1red.png'); background-size: cover; background-position: center; border-radius: 8px; min-height: 500px; height: 100%; position: relative;">
+              <div class="probootstrap-image" style="background-image: url('https://res.cloudinary.com/dfgycmek8/image/upload/c_scale,w_800,f_auto,q_auto/v1759143334/image_2025-09-29_115529920_jc1red.png'); background-size: cover; background-position: center; border-radius: 8px; min-height: 500px; height: 100%; position: relative;">
                 </div>
               <div style="margin-top: 20px; text-align: right;">
                 <img src="https://res.cloudinary.com/dfgycmek8/image/upload/v1759144787/AIESEC_Carthage_xbvvpz.png" alt="AIESEC Carthage Logo" style="max-width: 200px; height: auto; border-radius: 8px; display: inline-block;">
@@ -843,7 +850,7 @@
                 <p>AIESEC Carthage empowers youth in Tunis through leadership, teamwork, and global experiences.</p>
                 <h3>Social</h3>
                 <ul class="probootstrap-footer-social">
-                  <li><a href="https://www.facebook.com/share/g/19eFg9KPAZ/" target="_blank"><i class="icon-facebook2"></i></a></li>
+                  <li><a href="https://www.facebook.com/groups/3352377071567444" target="_blank"><i class="icon-facebook2"></i></a></li>
                   <li><a href="https://www.instagram.com/connectwithcarthage?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="icon-instagram2"></i></a></li>
                   <li><a href="https://www.instagram.com/aiesecintunisia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="icon-instagram2"></i></a></li>
                   <li><a href="https://www.youtube.com/@aieseccarthage5405" target="_blank"><i class="icon-youtube"></i></a></li>
@@ -856,7 +863,7 @@
                 <ul>
                   <li><a href="#home">Home</a></li>
                   <li><a href="#about">About</a></li>
-                  <li><a href="#why">Why Join</a></li>
+                  <li><a href="#why">Why</a></li>
                   <li><a href="#events">Events</a></li>
                   <li><a href="#apply">Apply</a></li>
                 </ul>
@@ -904,7 +911,5 @@
       <a href="#apply" class="btn btn-aiesec btn-lg">Apply</a>
     </div>
 
-  </body>
-</html>
   </body>
 </html>

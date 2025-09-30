@@ -1,0 +1,129 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║        AIESEC CARTHAGE - GUIDE DE DEPLOIEMENT RAPIDE         ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+✅ TOUS LES PROBLEMES ONT ETE CORRIGES !
+
+📋 FICHIERS CORRIGES :
+   ✓ index.html - Balises HTML en double supprimées
+   ✓ vercel.json - Configuration complète ajoutée
+   ✓ .gitignore - Fichiers sensibles protégés
+   ✓ Scripts de déploiement mis à jour
+
+═══════════════════════════════════════════════════════════════
+
+🚀 DEPLOIEMENT EN 4 ETAPES SIMPLES :
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ETAPE 1 : CREER LE REPOSITORY GITHUB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Allez sur : https://github.com/new
+
+2. Remplissez :
+   - Repository name : aiesec-carthage-website
+   - Public ✓
+   - Ne cochez PAS "Add a README file"
+
+3. Cliquez "Create repository"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ETAPE 2 : EXECUTER LE SCRIPT DE DEPLOIEMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Double-cliquez sur : deploy-github-vercel.bat
+
+Ou dans PowerShell :
+   cd "C:\Users\najdm\Downloads\enlight-master\enlight-master"
+   .\deploy-github-vercel.bat
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ETAPE 3 : PUSH VERS GITHUB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Dans PowerShell (même dossier) :
+
+   git push -u origin main
+
+Si on demande un mot de passe :
+   - Username : Nedim7050
+   - Password : Créez un Personal Access Token sur
+              https://github.com/settings/tokens
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ETAPE 4 : DEPLOYER SUR VERCEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Allez sur : https://vercel.com/new
+
+2. Cliquez "Import Git Repository"
+
+3. Sélectionnez : Nedim7050/aiesec-carthage-website
+
+4. Configuration :
+   - Project Name : aiesec-carthage
+   - Root Directory : enlight-master
+   - Framework Preset : Other
+
+5. Cliquez "Deploy" 🚀
+
+═══════════════════════════════════════════════════════════════
+
+⚡ METHODE ALTERNATIVE : VERCEL CLI
+
+Si vous préférez la ligne de commande :
+
+1. Installer Vercel CLI :
+   npm install -g vercel
+
+2. Se connecter :
+   vercel login
+
+3. Déployer :
+   cd enlight-master
+   vercel --prod
+
+═══════════════════════════════════════════════════════════════
+
+📚 GUIDES DISPONIBLES :
+
+   📄 INSTRUCTIONS-RAPIDES.md  → Guide simplifié
+   📄 GUIDE-DEPLOIEMENT-VERCEL.md → Guide détaillé complet
+   📄 DEPLOYMENT.md → Documentation technique
+
+═══════════════════════════════════════════════════════════════
+
+🐛 PROBLEMES COURANTS :
+
+❌ "Git not found"
+   → Installez Git : https://git-scm.com/download/win
+
+❌ "Permission denied" (GitHub)
+   → Créez un Personal Access Token
+
+❌ "Build failed" (Vercel)
+   → Vérifiez Root Directory = enlight-master
+
+❌ "404 Not Found"
+   → index.html doit être dans enlight-master/
+
+═══════════════════════════════════════════════════════════════
+
+📞 SUPPORT :
+
+Email : carthagetm@gmail.com
+Tel : +216 98 521 185 | +216 95 465 480 | +216 95 504 055
+
+═══════════════════════════════════════════════════════════════
+
+🎉 VOTRE SITE SERA ACCESSIBLE A :
+
+   https://aiesec-carthage-website.vercel.app
+
+   (ou un nom similaire généré par Vercel)
+
+═══════════════════════════════════════════════════════════════
+
+✨ BON DEPLOIEMENT ! ✨
