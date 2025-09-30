@@ -1,24 +1,13 @@
 {
-  "name": "aiesec-carthage-backend",
+  "name": "aiesec-carthage-website",
   "version": "1.0.0",
-  "description": "Backend API for AIESEC Carthage recruitment form",
-  "main": "api/index.js",
+  "description": "AIESEC Carthage recruitment website",
+  "main": "index.html",
   "scripts": {
-    "start": "node api/index.js",
-    "dev": "nodemon api/index.js"
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site - no start needed'"
   },
-  "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^7.5.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  }
+  "keywords": ["aiesec", "carthage", "recruitment", "static", "website"],
+  "author": "AIESEC Carthage",
+  "license": "MIT"
 }
