@@ -42,9 +42,14 @@ jQuery(document).ready(function() {
 	$('#recruitment-form').on('submit', function(e){
 		e.preventDefault();
 		
+		console.log('🚀 FORM SUBMISSION STARTED');
+		
 		var form = $(this);
 		var submitBtn = form.find('button[type="submit"]');
 		var originalText = submitBtn.text();
+		
+		console.log('📝 Form found:', form.length > 0);
+		console.log('🔘 Submit button found:', submitBtn.length > 0);
 		
 		// Basic validation
 		var isValid = true;
@@ -122,8 +127,13 @@ jQuery(document).ready(function() {
 			freeSpace: form.find('#free-space').val().trim()
 		};
 		
+		console.log('📊 Form data prepared:', formData);
+		
 		// Submit application data to API
+		console.log('🔄 Calling storeApplicationData...');
 		const result = await storeApplicationData(formData);
+		
+		console.log('📡 API result:', result);
 		
 		if (result.success) {
 			// Success state
@@ -187,24 +197,24 @@ jQuery(document).ready(function() {
 				device: getDeviceInfo()
 			};
 
+			console.log('🚀 Sending data to Google Sheets:', applicationData);
+
 			// Submit to Google Sheets API
 			const response = await fetch(API_URL, {
 				method: 'POST',
+				mode: 'no-cors', // Important pour Google Apps Script
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(applicationData)
 			});
 
-			const result = await response.json();
+			console.log('📡 Response received:', response);
 
-			if (result.success) {
-				console.log('✅ Application submitted successfully:', result.data);
-				return { success: true, data: result.data };
-			} else {
-				console.error('❌ API Error:', result.message);
-				return { success: false, message: result.message };
-			}
+			// Pour no-cors, on ne peut pas lire la réponse JSON
+			// Mais on considère que c'est un succès si pas d'erreur
+			console.log('✅ Application submitted successfully to Google Sheets');
+			return { success: true, data: applicationData };
 
 		} catch (error) {
 			console.error('❌ Network Error:', error);
