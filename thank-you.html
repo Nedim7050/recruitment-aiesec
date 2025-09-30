@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - AIESEC Carthage</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png" sizes="16x16 32x32 48x48">
+    <link rel="shortcut icon" href="https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/custom.css">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --aiesec-blue: #037EF3;
+            --aiesec-blue-dark: #0056b3;
+            --aiesec-white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #037EF3 0%, #0056b3 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .thank-you-container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: bounce 2s infinite;
+        }
+
+        .success-icon i {
+            font-size: 50px;
+            color: white;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .thank-you-title {
+            color: var(--aiesec-blue);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .thank-you-message {
+            color: #666;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .next-steps {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .next-steps h3 {
+            color: var(--aiesec-blue);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: var(--aiesec-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn-custom {
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary-custom {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(3, 126, 243, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-secondary-custom {
+            background: white;
+            color: var(--aiesec-blue);
+            border: 2px solid var(--aiesec-blue);
+        }
+
+        .btn-secondary-custom:hover {
+            background: var(--aiesec-blue);
+            color: white;
+            text-decoration: none;
+        }
+
+        .contact-info {
+            background: rgba(3, 126, 243, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .contact-info h4 {
+            color: var(--aiesec-blue);
+            margin-bottom: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .contact-item i {
+            color: var(--aiesec-blue);
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .thank-you-container {
+                padding: 40px 20px;
+            }
+            
+            .thank-you-title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-custom {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="thank-you-container">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        
+        <h1 class="thank-you-title">Thank You!</h1>
+        
+        <p class="thank-you-message">
+            Your application has been successfully submitted to AIESEC Carthage. 
+            We're excited about your interest in joining our community of young leaders!
+        </p>
+        
+        <div class="next-steps">
+            <h3>What's Next?</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-text">We'll review your application within 2-3 business days</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-text">You'll receive an email with next steps and interview details</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-text">If selected, you'll join our orientation program</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-text">Start your leadership journey with AIESEC Carthage!</div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="index.html" class="btn-custom btn-primary-custom">
+                <i class="fas fa-home"></i>
+                Back to Home
+            </a>
+            <a href="/#about" class="btn-custom btn-secondary-custom">
+                <i class="fas fa-info-circle"></i>
+                Learn More
+            </a>
+        </div>
+        
+        <div class="contact-info">
+            <h4><i class="fas fa-phone"></i> Need Help?</h4>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>carthagetm@gmail.com</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>+216 98 521 185 | +216 95 465 480 | +216 95 504 055</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Carthage, Tunis, Tunisia</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="js/vendor/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="js/vendor/bootstrap.min.js"></script>
+    
+    <script>
+        // Analytics tracking for thank you page
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'conversion', {
+                'send_to': 'GA_MEASUREMENT_ID',
+                'event_category': 'Form',
+                'event_label': 'Application Submitted'
+            });
+        }
+        
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'CompleteRegistration', {
+                'content_name': 'AIESEC Application Submitted'
+            });
+        }
+        
+        // Auto redirect after 30 seconds (optional)
+        setTimeout(function() {
+            if (confirm('Would you like to return to the homepage?')) {
+                window.location.href = '/';
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
