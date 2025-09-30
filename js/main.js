@@ -171,56 +171,82 @@
 
 	var tabsOwl = function() {
 
+		// Initialize both carousels on page load
 		initialize_owl(jQuery('#owl1'));
+		initialize_owl(jQuery('#owl2'));
 
 		jQuery('a[href="#featured-news"]').on('shown.bs.tab', function () {
-    	initialize_owl(jQuery('#owl1'));
-    	console.log('nice');
+			// Force destroy first to ensure clean initialization
+			destroy_owl(jQuery('#owl1'));
+			// Small delay to ensure destruction is complete
+			setTimeout(function() {
+				initialize_owl(jQuery('#owl1'));
+				console.log('Featured news carousel initialized');
+			}, 100);
 		}).on('hide.bs.tab', function () {
 	    destroy_owl(jQuery('#owl1'));
 		});
 
 		jQuery('a[href="#upcoming-events"]').on('shown.bs.tab', function () {
-	    initialize_owl(jQuery('#owl2'));
-	    console.log('nice');
+			// Force destroy first to ensure clean initialization
+			destroy_owl(jQuery('#owl2'));
+			// Small delay to ensure destruction is complete
+			setTimeout(function() {
+				initialize_owl(jQuery('#owl2'));
+				console.log('Workshops carousel initialized');
+			}, 100);
 		}).on('hide.bs.tab', function () {
 	    destroy_owl(jQuery('#owl2'));
 		});
 
 
 		function initialize_owl(el) {
-	    el.owlCarousel({
-	      items: 3,
-				loop: true,
-				margin: 20,
-				nav: false,
-				dots: true,
-				smartSpeed: 800,
-				autoHeight: true,
-				navText: [
-			      "<i class='icon-keyboard_arrow_left owl-direction'></i>",
-			      "<i class='icon-keyboard_arrow_right owl-direction'></i>"
-		     	],
-		     	responsive:{
-		        0:{
-		            items:1
-		        },
-		        400:{
-		            items:1
-		        },
-		        600:{
-		            items:2
-		        },
-		        1000:{
-		            items:3
-		        }
-		    	}
-	    });
+			// Check if element exists and is not already initialized
+			if (el.length && !el.hasClass('owl-loaded')) {
+				console.log('Initializing carousel for:', el.attr('id'));
+				el.owlCarousel({
+					items: 3,
+					loop: true,
+					margin: 20,
+					nav: false,
+					dots: true,
+					smartSpeed: 800,
+					autoHeight: true,
+					navText: [
+						"<i class='icon-keyboard_arrow_left owl-direction'></i>",
+						"<i class='icon-keyboard_arrow_right owl-direction'></i>"
+					],
+					responsive:{
+						0:{
+							items:1
+						},
+						400:{
+							items:1
+						},
+						600:{
+							items:2
+						},
+						1000:{
+							items:3
+						}
+					}
+				});
+			} else if (el.length && el.hasClass('owl-loaded')) {
+				console.log('Carousel already initialized for:', el.attr('id'));
+			} else {
+				console.log('Element not found for carousel initialization');
+			}
 		}
 
+		// Make initialize_owl globally accessible
+		window.initialize_owl = initialize_owl;
+
 		function destroy_owl(el) {
-		    el.trigger("destroy.owl.carousel");
-		    el.find('.owl-stage-outer').children(':eq(0)').unwrap();
+			if (el.length && el.hasClass('owl-loaded')) {
+				console.log('Destroying carousel for:', el.attr('id'));
+				el.trigger("destroy.owl.carousel");
+				el.find('.owl-stage-outer').children(':eq(0)').unwrap();
+			}
 		}
 
 	}
