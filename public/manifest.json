@@ -1,0 +1,73 @@
+{
+  "name": "AIESEC Carthage - Join Your Leadership Journey",
+  "short_name": "AIESEC Carthage",
+  "description": "Join AIESEC Carthage for global leadership opportunities, internships abroad, and personal development.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#037ef3",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["education", "lifestyle", "productivity"],
+  "icons": [
+    {
+      "src": "https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://res.cloudinary.com/dfgycmek8/image/upload/v1759065609/background_site_rcr_aiesec_vk87wu.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "AIESEC Carthage Homepage"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Apply Now",
+      "short_name": "Apply",
+      "description": "Apply to join AIESEC Carthage",
+      "url": "/#apply",
+      "icons": [
+        {
+          "src": "https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "About AIESEC",
+      "short_name": "About",
+      "description": "Learn about AIESEC and our mission",
+      "url": "/#about",
+      "icons": [
+        {
+          "src": "https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}
+
+
