@@ -1,6 +1,20 @@
 // Configuration
 const GOOGLE_SHEETS_API = 'https://script.google.com/macros/s/AKfycbxo3a4Monbjv0Pg_UnCSKNNH54aFQjOHSc2IEEreyMsXJBecTQEy4s83IRWdFblPD3g/exec';
 
+// Fonction de test de connectivité
+async function testConnection() {
+    try {
+        console.log('🧪 Test de connectivité avec Apps Script...');
+        const testUrl = `${GOOGLE_SHEETS_API}?test=1`;
+        const img = new Image();
+        img.onload = () => console.log('✅ Connexion Apps Script OK');
+        img.onerror = () => console.log('❌ Connexion Apps Script échouée');
+        img.src = testUrl;
+    } catch (error) {
+        console.error('❌ Erreur test connexion:', error);
+    }
+}
+
 // Fonction pour détecter le type d'appareil
 function getDeviceType() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -12,22 +26,98 @@ async function submitToGoogleSheets(formData) {
     try {
         console.log('🚀 Envoi des données au Google Sheet:', formData);
         
-        const response = await fetch(GOOGLE_SHEETS_API, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        });
+        // Méthode 1: Essayer avec fetch (mode no-cors) - Format pour Apps Script
+        try {
+            // Format exact pour votre script Apps Script
+            const sheetData = {
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                university: formData.university,
+                age: formData.age,
+                level: formData.level,
+                motivation: formData.motivation,
+                freeSpace: formData.freeSpace,
+                device: {
+                    type: formData.device,
+                    userAgent: navigator.userAgent
+                }
+            };
+            
+            const response = await fetch(GOOGLE_SHEETS_API, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sheetData)
+            });
+            
+            console.log('✅ Données envoyées au Google Sheet (format Apps Script)');
+            return { success: true };
+            
+        } catch (fetchError) {
+            console.log('⚠️ Fetch échoué, essai avec méthode alternative...');
+            
+            // Méthode 2: Utiliser un formulaire HTML traditionnel (plus fiable avec Apps Script)
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = GOOGLE_SHEETS_API;
+            form.target = '_blank';
+            form.style.display = 'none';
+            
+            // Ajouter les champs avec les noms attendus par votre script Apps Script
+            const fields = {
+                'name': formData.name,
+                'email': formData.email,
+                'phone': formData.phone,
+                'university': formData.university,
+                'age': formData.age,
+                'level': formData.level,
+                'motivation': formData.motivation,
+                'freeSpace': formData.freeSpace,
+                'device': JSON.stringify({
+                    type: formData.device,
+                    userAgent: navigator.userAgent
+                })
+            };
+            
+            Object.keys(fields).forEach(key => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = fields[key];
+                form.appendChild(input);
+            });
+            
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+            
+            console.log('✅ Données envoyées via formulaire HTML');
+            return { success: true };
+        }
         
-        console.log('✅ Données envoyées avec succès au Google Sheet');
-        return { success: true };
-        
-    } catch (error) {
-        console.error('❌ Erreur lors de l\'envoi:', error);
-        return { success: false, error: error.message };
-    }
+        } catch (error) {
+            console.error('❌ Erreur lors de l\'envoi:', error);
+            
+            // Fallback: Sauvegarder en localStorage en cas d'échec
+            try {
+                const existingData = JSON.parse(localStorage.getItem('aiesec_candidates') || '[]');
+                const candidateData = {
+                    ...formData,
+                    id: Date.now(),
+                    timestamp: new Date().toISOString()
+                };
+                existingData.push(candidateData);
+                localStorage.setItem('aiesec_candidates', JSON.stringify(existingData));
+                console.log('💾 Données sauvegardées en localStorage comme fallback');
+            } catch (storageError) {
+                console.error('❌ Erreur localStorage:', storageError);
+            }
+            
+            return { success: false, error: error.message };
+        }
 }
 
 // Gestionnaire du formulaire
@@ -87,7 +177,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Afficher message de succès
                 const successMessage = document.createElement('div');
                 successMessage.className = 'alert alert-success mt-3';
-                successMessage.innerHTML = '<i class="icon-checkmark"></i> <strong>Merci !</strong> Votre candidature a été enregistrée avec succès.';
+                successMessage.innerHTML = `
+                    <i class="icon-checkmark"></i> 
+                    <strong>Merci !</strong> Votre candidature a été enregistrée avec succès dans notre système.<br>
+                    <small>Nous vous contacterons bientôt via email ou téléphone.</small>
+                `;
                 form.appendChild(successMessage);
                 
                 // Réinitialiser le formulaire après 3 secondes
@@ -115,7 +209,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Afficher message d'erreur
             const errorMessage = document.createElement('div');
             errorMessage.className = 'alert alert-danger mt-3';
-            errorMessage.innerHTML = '<i class="icon-cross"></i> <strong>Erreur !</strong> Impossible d\'enregistrer votre candidature. Veuillez réessayer.';
+            errorMessage.innerHTML = `
+                <i class="icon-cross"></i> 
+                <strong>Erreur !</strong> Impossible d'enregistrer votre candidature.<br>
+                <small>Veuillez vérifier votre connexion internet et réessayer. Si le problème persiste, contactez-nous directement.</small>
+            `;
             form.appendChild(errorMessage);
             
             // Restaurer le bouton après 3 secondes
@@ -129,4 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     console.log('✅ Gestionnaire du formulaire configuré');
+    
+    // Tester la connexion au chargement
+    testConnection();
 });
