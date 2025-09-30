@@ -1,6 +1,9 @@
 # Ignore these files from Vercel deployment
-node_modules
-.git
+node_modules/
+.git/
 .gitignore
 README.md
 DEPLOYMENT.md
+public/
+VERCEL_DEPLOYMENT_TRIGGER.md
+build.sh
