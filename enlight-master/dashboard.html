@@ -1,1024 +1,269 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - AIESEC Carthage Admin</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png" sizes="16x16 32x32 48x48">
-    <link rel="shortcut icon" href="https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png">
-    <link rel="apple-touch-icon" href="https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png">
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/custom.css">
-    
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    
+    <title>Dashboard Admin - AIESEC Carthage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --aiesec-blue: #037EF3;
-            --aiesec-blue-dark: #0056b3;
-            --aiesec-white: #ffffff;
-            --aiesec-light: #f8f9fa;
-            --gradient-primary: linear-gradient(135deg, #037EF3 0%, #0056b3 100%);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Header */
-        .dashboard-header {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
-
-        .header-left img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .header-left h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            color: white;
-            text-decoration: none;
-        }
-
-        /* Main Content */
-        .dashboard-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid var(--aiesec-blue);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .stat-card .stat-icon {
-            font-size: 2.5rem;
-            color: var(--aiesec-blue);
-            margin-bottom: 15px;
-        }
-
-        .stat-card .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .stat-card .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Table Container */
-        .table-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .table-header {
-            background: var(--aiesec-blue);
-            color: white;
-            padding: 20px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .table-header h3 {
-            margin: 0;
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        .refresh-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .refresh-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* DataTable Styling */
-        .dataTables_wrapper {
-            padding: 0 25px 25px 25px;
-        }
-
-        .dataTables_filter {
-            margin-bottom: 20px;
-        }
-
-        .dataTables_filter input {
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 0.9rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .dataTables_filter input:focus {
-            outline: none;
-            border-color: var(--aiesec-blue);
-        }
-
-        .dataTables_length select {
-            border: 2px solid #e1e5e9;
-            border-radius: 6px;
-            padding: 5px 10px;
-            margin: 0 5px;
-        }
-
-        .dataTables_info {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .dataTables_paginate .paginate_button {
-            border: 1px solid #e1e5e9;
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin: 0 2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .dataTables_paginate .paginate_button:hover {
-            background: var(--aiesec-blue);
-            color: white;
-            border-color: var(--aiesec-blue);
-        }
-
-        .dataTables_paginate .paginate_button.current {
-            background: var(--aiesec-blue);
-            color: white;
-            border-color: var(--aiesec-blue);
-        }
-
-        /* Table Styling */
-        table.dataTable {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        table.dataTable thead th {
-            background: #f8f9fa;
-            color: #333;
-            font-weight: 600;
-            padding: 15px 12px;
-            border-bottom: 2px solid #e1e5e9;
-            text-align: left;
-        }
-
-        table.dataTable tbody td {
-            padding: 12px;
-            border-bottom: 1px solid #f0f0f0;
-            vertical-align: top;
-        }
-
-        table.dataTable tbody tr:hover {
-            background: #f8f9fa;
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-        }
-
-        .btn-action {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-view {
-            background: #28a745;
-            color: white;
-        }
-
-        .btn-view:hover {
-            background: #218838;
-        }
-
-        .btn-export {
-            background: #17a2b8;
-            color: white;
-        }
-
-        .btn-export:hover {
-            background: #138496;
-        }
-
-        .btn-delete {
-            background: #dc3545;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background: #c82333;
-        }
-
-        /* Modal Styling */
-        .modal-content {
-            border-radius: 12px;
-            border: none;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal-header {
-            background: var(--aiesec-blue);
-            color: white;
-            border-radius: 12px 12px 0 0;
-            border-bottom: none;
-        }
-
-        .modal-header .btn-close {
-            filter: invert(1);
-        }
-
-        .modal-body {
-            padding: 25px;
-        }
-
-        .detail-row {
-            display: flex;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .detail-label {
-            font-weight: 600;
-            color: #333;
-            width: 120px;
-            flex-shrink: 0;
-        }
-
-        .detail-value {
-            color: #666;
-            flex-grow: 1;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .table-header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .dataTables_wrapper {
-                padding: 0 15px 15px 15px;
-            }
-
-            table.dataTable thead th,
-            table.dataTable tbody td {
-                padding: 8px 6px;
-                font-size: 0.8rem;
-            }
-        }
-
-        /* Loading State */
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-
-        .loading i {
-            font-size: 2rem;
-            color: var(--aiesec-blue);
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        body { background-color: #f8f9fa; }
+        .dashboard-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem 0; }
+        .stats-card { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 1rem; }
+        .stats-number { font-size: 2rem; font-weight: bold; color: #667eea; }
+        .login-container { max-width: 400px; margin: 100px auto; }
+        .login-card { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .btn-login { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 12px 30px; border-radius: 25px; }
+        .table-container { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="dashboard-header">
-        <div class="header-content">
-            <div class="header-left">
-                <img src="https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png" alt="AIESEC Carthage Logo">
-                <h1>AIESEC Carthage Admin Dashboard</h1>
-            </div>
-            <div class="header-right">
-                <span id="current-time"></span>
-                <a href="login.html" class="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="dashboard-content">
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-users"></i>
+    <!-- Login Section -->
+    <div id="loginSection" class="login-container">
+        <div class="login-card text-center">
+            <h2 class="mb-4"><i class="fas fa-shield-alt"></i> Dashboard Admin</h2>
+            <p class="text-muted mb-4">Connectez-vous pour accéder aux candidatures</p>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <input type="password" id="adminPassword" class="form-control" placeholder="Mot de passe admin" required>
                 </div>
-                <div class="stat-number" id="total-applications">0</div>
-                <div class="stat-label">Total Applications</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-calendar-day"></i>
-                </div>
-                <div class="stat-number" id="today-applications">0</div>
-                <div class="stat-label">Today's Applications</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-university"></i>
-                </div>
-                <div class="stat-number" id="universities-count">0</div>
-                <div class="stat-label">Universities</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="stat-number" id="conversion-rate">0%</div>
-                <div class="stat-label">Conversion Rate</div>
-            </div>
-        </div>
-
-        <!-- Applications Table -->
-        <div class="table-container">
-            <div class="table-header">
-                <h3><i class="fas fa-list"></i> Recruitment Applications</h3>
-                <div style="display: flex; gap: 10px;">
-                <button class="refresh-btn" onclick="refreshData()">
-                    <i class="fas fa-sync-alt"></i> Refresh
+                <button type="submit" class="btn btn-login text-white w-100">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
                 </button>
-                    <button class="refresh-btn" onclick="exportAllData()" style="background: #28a745;">
-                        <i class="fas fa-download"></i> Export All
-                    </button>
-                    <button class="refresh-btn" onclick="importData()" style="background: #17a2b8;">
-                        <i class="fas fa-upload"></i> Import
-                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboardSection" class="hidden">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1><i class="fas fa-tachometer-alt"></i> Dashboard Admin</h1>
+                        <p class="mb-0">Gestion des candidatures AIESEC Carthage</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button id="logoutBtn" class="btn btn-outline-light">
+                            <i class="fas fa-sign-out-alt"></i> Déconnexion
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="dataTables_wrapper">
-                <table id="applications-table" class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>University</th>
-                            <th>Age</th>
-                            <th>Level</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="applications-tbody">
-                        <!-- Data will be loaded here -->
-                    </tbody>
-                </table>
             </div>
         </div>
-    </main>
 
-    <!-- Application Detail Modal -->
-    <div class="modal fade" id="applicationModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-user"></i> Application Details
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Stats -->
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                        <div class="stats-number" id="totalCandidates">0</div>
+                        <div class="text-muted">Total Candidatures</div>
+                    </div>
                 </div>
-                <div class="modal-body" id="modal-body">
-                    <!-- Application details will be loaded here -->
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-mobile-alt fa-2x text-success mb-2"></i>
+                        <div class="stats-number" id="mobileCandidates">0</div>
+                        <div class="text-muted">Mobile</div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="exportCurrentApplication()">
-                        <i class="fas fa-download"></i> Export
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-desktop fa-2x text-info mb-2"></i>
+                        <div class="stats-number" id="desktopCandidates">0</div>
+                        <div class="text-muted">Desktop</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-calendar-day fa-2x text-warning mb-2"></i>
+                        <div class="stats-number" id="todayCandidates">0</div>
+                        <div class="text-muted">Aujourd'hui</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="container mt-4">
+            <div class="table-container">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4><i class="fas fa-list"></i> Liste des Candidatures</h4>
+                    <button id="refreshBtn" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i> Actualiser
                     </button>
-                    <button type="button" class="btn btn-danger" onclick="deleteCurrentApplication()">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table id="candidatesTable" class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Université</th>
+                                <th>Âge</th>
+                                <th>Niveau</th>
+                                <th>Appareil</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Les données seront chargées ici -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- jQuery -->
-    <script src="js/vendor/jquery.min.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="js/vendor/bootstrap.min.js"></script>
-    <!-- DataTables JS -->
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
-        // Load applications from global storage
-        function loadApplicationsFromStorage() {
-            try {
-                console.log('Loading applications from global storage...');
-                
-                // Use the same global key as the form
-                var globalKey = 'aiesec_global_data_' + new Date().getFullYear() + '_' + (new Date().getMonth() + 1);
-                
-                // Get applications from global storage
-                var applicationsData = localStorage.getItem(globalKey) || '[]';
-                var applications = JSON.parse(applicationsData);
-                
-                console.log('Loaded applications from global storage:', applications.length);
-                
-                // Sort by date (newest first)
-                applications.sort(function(a, b) {
-                    return new Date(b.date) - new Date(a.date);
-                });
-                
-                return applications;
-            } catch (error) {
-                console.error('Error loading applications:', error);
-                return [];
+        // Configuration
+        const GOOGLE_SHEETS_API = 'https://script.google.com/macros/s/AKfycbxo3a4Monbjv0Pg_UnCSKNNH54aFQjOHSc2IEEreyMsXJBecTQEy4s83IRWdFblPD3g/exec';
+        const ADMIN_PASSWORD = 'admin123';
+        
+        let candidatesData = [];
+        let dataTable;
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('adminPassword').value;
+            
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('dashboardSection').classList.remove('hidden');
+                loadCandidates();
+                setInterval(loadCandidates, 30000); // Actualisation automatique toutes les 30 secondes
+            } else {
+                alert('❌ Mot de passe incorrect !');
             }
-        }
-
-        let applicationsData = [];
-        let currentApplication = null;
-
-        // Initialize dashboard
-        $(document).ready(function() {
-            // Load data first, then initialize
-            applicationsData = loadApplicationsFromStorage();
-            console.log('Dashboard loaded with', applicationsData.length, 'applications');
-            updateStats();
-            initializeTable();
-            updateCurrentTime();
-            setInterval(updateCurrentTime, 1000);
-            
-            // Add event listeners for modal close buttons
-            $('.btn-close').on('click', function() {
-                closeModal();
-            });
-            
-            // Close modal when clicking outside
-            $('#applicationModal').on('click', function(e) {
-                if (e.target === this) {
-                    closeModal();
-                }
-            });
         });
 
-        // Update current time
-        function updateCurrentTime() {
-            const now = new Date();
-            const timeString = now.toLocaleString('en-US', {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            $('#current-time').text(timeString);
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('adminPassword').value = '';
+        });
+
+        // Charger les candidatures
+        async function loadCandidates() {
+            try {
+                console.log('🔄 Chargement des candidatures...');
+                
+                const response = await fetch(GOOGLE_SHEETS_API);
+                const result = await response.json();
+                
+                if (result.success) {
+                    candidatesData = result.data || [];
+                    updateStats();
+                    updateTable();
+                    console.log('✅ Candidatures chargées:', candidatesData.length);
+                } else {
+                    console.error('❌ Erreur:', result.message);
+                    alert('Erreur lors du chargement: ' + result.message);
+                }
+            } catch (error) {
+                console.error('❌ Erreur de connexion:', error);
+                alert('Erreur de connexion au serveur');
+            }
         }
 
-        // Update statistics
+        // Mettre à jour les statistiques
         function updateStats() {
-            const total = applicationsData.length;
-            const today = applicationsData.filter(app => {
-                const appDate = new Date(app.date);
-                const today = new Date();
-                return appDate.toDateString() === today.toDateString();
+            const total = candidatesData.length;
+            const mobile = candidatesData.filter(c => c.Appareil === 'mobile').length;
+            const desktop = candidatesData.filter(c => c.Appareil === 'desktop').length;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const todayCount = candidatesData.filter(c => {
+                const candidateDate = new Date(c.Date).toISOString().split('T')[0];
+                return candidateDate === today;
             }).length;
             
-            const universities = [...new Set(applicationsData.map(app => app.university))].length;
-            const conversionRate = total > 0 ? Math.round((total / 100) * 100) : 0;
-
-            $('#total-applications').text(total);
-            $('#today-applications').text(today);
-            $('#universities-count').text(universities);
-            $('#conversion-rate').text(conversionRate + '%');
+            document.getElementById('totalCandidates').textContent = total;
+            document.getElementById('mobileCandidates').textContent = mobile;
+            document.getElementById('desktopCandidates').textContent = desktop;
+            document.getElementById('todayCandidates').textContent = todayCount;
         }
 
-        // Initialize DataTable
-        function initializeTable() {
-            $('#applications-table').DataTable({
-                data: applicationsData,
-                columns: [
-                    { data: 'id' },
-                    { data: 'name' },
-                    { data: 'email' },
-                    { data: 'phone' },
-                    { data: 'university' },
-                    { data: 'age' },
-                    { data: 'level' },
-                    { 
-                        data: 'date',
-                        render: function(data) {
-                            return new Date(data).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            });
-                        }
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return `
-                                <div class="action-buttons">
-                                    <button class="btn-action btn-view" onclick="viewApplication(${row.id})">
-                                        <i class="fas fa-eye"></i> View
-                                    </button>
-                                    <button class="btn-action btn-export" onclick="exportApplication(${row.id})">
-                                        <i class="fas fa-download"></i> Export
-                                    </button>
-                                    <button class="btn-action btn-delete" onclick="deleteApplication(${row.id})">
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
-                                </div>
-                            `;
-                        }
-                    }
-                ],
-                responsive: true,
-                pageLength: 10,
-                order: [[0, 'desc']],
-                language: {
-                    search: "Search applications:",
-                    lengthMenu: "Show _MENU_ applications per page",
-                    info: "Showing _START_ to _END_ of _TOTAL_ applications",
-                    paginate: {
-                        first: "First",
-                        last: "Last",
-                        next: "Next",
-                        previous: "Previous"
-                    }
-                }
-            });
-        }
-
-        // View application details
-        function viewApplication(id) {
-            currentApplication = applicationsData.find(app => app.id === id);
-            if (currentApplication) {
-                const modalBody = `
-                    <div class="detail-row">
-                        <div class="detail-label">Name:</div>
-                        <div class="detail-value">${currentApplication.name}</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">Email:</div>
-                        <div class="detail-value">${currentApplication.email}</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">Phone:</div>
-                        <div class="detail-value">${currentApplication.phone}</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">University:</div>
-                        <div class="detail-value">${currentApplication.university}</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">Age:</div>
-                        <div class="detail-value">${currentApplication.age} years old</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">Level of Study:</div>
-                        <div class="detail-value">${currentApplication.level}</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">Date:</div>
-                        <div class="detail-value">${new Date(currentApplication.date).toLocaleString()}</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">Motivation:</div>
-                        <div class="detail-value">${currentApplication.motivation}</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">Additional Information:</div>
-                        <div class="detail-value">${currentApplication.freeSpace || 'No additional information provided'}</div>
-                    </div>
+        // Mettre à jour le tableau
+        function updateTable() {
+            const tbody = document.querySelector('#candidatesTable tbody');
+            tbody.innerHTML = '';
+            
+            candidatesData.forEach(candidate => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${candidate.ID || '-'}</td>
+                    <td>${candidate.Nom || '-'}</td>
+                    <td>${candidate.Email || '-'}</td>
+                    <td>${candidate.Téléphone || '-'}</td>
+                    <td>${candidate.Université || '-'}</td>
+                    <td>${candidate.Âge || '-'}</td>
+                    <td>${candidate.Niveau || '-'}</td>
+                    <td><span class="badge ${candidate.Appareil === 'mobile' ? 'bg-success' : 'bg-info'}">${candidate.Appareil || '-'}</span></td>
+                    <td>${candidate.Date ? new Date(candidate.Date).toLocaleDateString('fr-FR') : '-'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewDetails('${candidate.ID}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
                 `;
-                $('#modal-body').html(modalBody);
-                $('#applicationModal').modal('show');
-            }
-        }
-
-        // Close modal function
-        function closeModal() {
-            $('#applicationModal').modal('hide');
-        }
-
-        // Export application
-        function exportApplication(id) {
-            const application = applicationsData.find(app => app.id === id);
-            if (application) {
-                const data = {
-                    name: application.name,
-                    email: application.email,
-                    phone: application.phone,
-                    university: application.university,
-                    age: application.age,
-                    level: application.level,
-                    motivation: application.motivation,
-                    freeSpace: application.freeSpace,
-                    date: application.date
-                };
-                
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `aiesec-application-${application.id}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }
-        }
-
-        // Export current application (from modal)
-        function exportCurrentApplication() {
-            if (currentApplication) {
-                const data = {
-                    name: currentApplication.name,
-                    email: currentApplication.email,
-                    phone: currentApplication.phone,
-                    university: currentApplication.university,
-                    age: currentApplication.age,
-                    level: currentApplication.level,
-                    motivation: currentApplication.motivation,
-                    freeSpace: currentApplication.freeSpace,
-                    date: currentApplication.date
-                };
-                
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `aiesec-application-${currentApplication.id}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }
-        }
-
-        // Delete application
-        function deleteApplication(id) {
-            // Find the application
-            const application = applicationsData.find(app => app.id === id);
-            if (!application) {
-                alert('Application not found!');
-                return;
-            }
-
-            // Show confirmation dialog
-            const confirmed = confirm(`Are you sure you want to delete the application from ${application.name}?\n\nThis action cannot be undone.`);
-            if (!confirmed) {
-                return;
-            }
-
-            // Remove from applicationsData array
-            applicationsData = applicationsData.filter(app => app.id !== id);
-
-            // Update localStorage
-            try {
-                localStorage.setItem('aiesecApplications', JSON.stringify(applicationsData));
-                console.log('Application deleted from localStorage:', application.name);
-            } catch (error) {
-                console.error('Error updating localStorage:', error);
-                alert('Error deleting application from storage!');
-                return;
-            }
-
-            // Destroy and recreate DataTable
-            if ($.fn.DataTable.isDataTable('#applications-table')) {
-                $('#applications-table').DataTable().destroy();
-            }
-
-            // Clear table body
-            $('#applications-tbody').empty();
-
-            // Reinitialize table with updated data
-            initializeTable();
-
-            // Update statistics
-            updateStats();
-
-            // Show success message
-            showDeleteSuccess(application.name);
-        }
-
-        // Delete current application (from modal)
-        function deleteCurrentApplication() {
-            if (currentApplication) {
-                deleteApplication(currentApplication.id);
-                // Close modal after deletion
-                closeModal();
-            }
-        }
-
-        // Show delete success message
-        function showDeleteSuccess(applicantName) {
-            // Create success message element
-            const successMsg = document.createElement('div');
-            successMsg.className = 'alert alert-success alert-dismissible fade show';
-            successMsg.style.position = 'fixed';
-            successMsg.style.top = '20px';
-            successMsg.style.right = '20px';
-            successMsg.style.zIndex = '9999';
-            successMsg.style.minWidth = '300px';
-            successMsg.innerHTML = `
-                <i class="fas fa-check-circle"></i>
-                <strong>Success!</strong> Application from ${applicantName} has been deleted.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            `;
-
-            // Add to page
-            document.body.appendChild(successMsg);
-
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-                if (successMsg.parentNode) {
-                    successMsg.remove();
-                }
-            }, 5000);
-        }
-
-        // Refresh data - reload from URL and localStorage
-        function refreshData() {
-            const refreshBtn = document.querySelector('.refresh-btn');
-            const originalText = refreshBtn.innerHTML;
-            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
-            refreshBtn.disabled = true;
+                tbody.appendChild(row);
+            });
             
-            setTimeout(() => {
-                const previousCount = applicationsData.length;
-                applicationsData = loadApplicationsFromStorage();
-                const newCount = applicationsData.length;
-                
-                console.log(`Refresh: ${previousCount} -> ${newCount} applications`);
-                
-                // Destroy existing DataTable
-                if ($.fn.DataTable.isDataTable('#applications-table')) {
-                    $('#applications-table').DataTable().destroy();
-                }
-                
-                // Clear table body
-                $('#applications-tbody').empty();
-                
-                // Reinitialize table with new data
-                initializeTable();
-                
-                // Update statistics
-                updateStats();
-                
-                refreshBtn.innerHTML = originalText;
-                refreshBtn.disabled = false;
-                
-                // Show refresh success message
-                if (newCount > previousCount) {
-                    showRefreshMessage(`Data refreshed! ${newCount - previousCount} new applications found.`);
-                } else {
-                    showRefreshMessage('Data refreshed! No new applications.');
-                }
-            }, 1000);
-        }
-        
-        // Show refresh message
-        function showRefreshMessage(message) {
-            const refreshMsg = document.createElement('div');
-            refreshMsg.className = 'alert alert-info alert-dismissible fade show';
-            refreshMsg.style.position = 'fixed';
-            refreshMsg.style.top = '20px';
-            refreshMsg.style.right = '20px';
-            refreshMsg.style.zIndex = '9999';
-            refreshMsg.style.minWidth = '300px';
-            refreshMsg.innerHTML = `
-                <i class="fas fa-info-circle"></i>
-                <strong>Refresh Complete!</strong> ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            `;
-            
-            document.body.appendChild(refreshMsg);
-            
-            setTimeout(() => {
-                if (refreshMsg.parentNode) {
-                    refreshMsg.remove();
-                }
-            }, 3000);
-        }
-
-        // Export all data function
-        function exportAllData() {
-            const data = {
-                applications: applicationsData,
-                exportDate: new Date().toISOString(),
-                totalApplications: applicationsData.length
-            };
-            
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `aiesec-applications-backup-${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            showMessage('All applications exported successfully!', 'success');
-        }
-
-        // Import data function
-        function importData() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        try {
-                            const data = JSON.parse(e.target.result);
-                            if (data.applications && Array.isArray(data.applications)) {
-                                // Merge with existing data (avoid duplicates)
-                                const existingIds = applicationsData.map(app => app.id);
-                                const newApplications = data.applications.filter(app => !existingIds.includes(app.id));
-                                
-                                applicationsData = [...applicationsData, ...newApplications];
-                                localStorage.setItem('aiesecApplications', JSON.stringify(applicationsData));
-                                
-                                // Refresh table
-                                if ($.fn.DataTable.isDataTable('#applications-table')) {
-                                    $('#applications-table').DataTable().destroy();
-                                }
-                                $('#applications-tbody').empty();
-                                initializeTable();
-                                updateStats();
-                                
-                                showMessage(`Imported ${newApplications.length} new applications successfully!`, 'success');
-                            } else {
-                                showMessage('Invalid file format!', 'error');
-                            }
-                        } catch (error) {
-                            showMessage('Error reading file: ' + error.message, 'error');
-                        }
-                    };
-                    reader.readAsText(file);
-                }
-            };
-            input.click();
-        }
-
-        // Show message function
-        function showMessage(message, type) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
-            messageDiv.style.position = 'fixed';
-            messageDiv.style.top = '20px';
-            messageDiv.style.right = '20px';
-            messageDiv.style.zIndex = '9999';
-            messageDiv.style.minWidth = '300px';
-            messageDiv.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-                <strong>${type === 'success' ? 'Success!' : 'Error!'}</strong> ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            `;
-            
-            document.body.appendChild(messageDiv);
-            
-            setTimeout(() => {
-                if (messageDiv.parentNode) {
-                    messageDiv.remove();
-                }
-            }, 5000);
-        }
-
-        // Auto-sync function (check for updates every 10 seconds)
-        setInterval(() => {
-            // Check for new applications in localStorage
-            const currentData = loadApplicationsFromStorage();
-            if (currentData.length !== applicationsData.length) {
-                console.log('New applications detected, refreshing...');
-                refreshData();
+            // Initialiser DataTable si pas déjà fait
+            if (!dataTable) {
+                dataTable = $('#candidatesTable').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json'
+                    },
+                    pageLength: 25,
+                    order: [[8, 'desc']] // Trier par date décroissante
+                });
+            } else {
+                dataTable.clear().rows.add($('#candidatesTable tbody tr')).draw();
             }
-        }, 10000); // Check every 10 seconds
+        }
+
+        // Voir les détails d'une candidature
+        function viewDetails(candidateId) {
+            const candidate = candidatesData.find(c => c.ID == candidateId);
+            if (candidate) {
+                const details = `
+                    <strong>Nom:</strong> ${candidate.Nom}<br>
+                    <strong>Email:</strong> ${candidate.Email}<br>
+                    <strong>Téléphone:</strong> ${candidate.Téléphone}<br>
+                    <strong>Université:</strong> ${candidate.Université}<br>
+                    <strong>Âge:</strong> ${candidate.Âge}<br>
+                    <strong>Niveau:</strong> ${candidate.Niveau}<br>
+                    <strong>Motivation:</strong> ${candidate.Motivation}<br>
+                    <strong>Espace libre:</strong> ${candidate['Espace libre']}<br>
+                    <strong>Appareil:</strong> ${candidate.Appareil}<br>
+                    <strong>Date:</strong> ${new Date(candidate.Date).toLocaleString('fr-FR')}
+                `;
+                alert(details);
+            }
+        }
+
+        // Actualiser
+        document.getElementById('refreshBtn').addEventListener('click', loadCandidates);
+
+        console.log('✅ Dashboard initialisé');
     </script>
 </body>
 </html>
-
