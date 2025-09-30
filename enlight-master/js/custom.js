@@ -122,81 +122,60 @@ jQuery(document).ready(function() {
 			freeSpace: form.find('#free-space').val().trim()
 		};
 		
-		// Store data locally for dashboard
-		storeApplicationData(formData);
+		// Submit application data to API
+		const result = await storeApplicationData(formData);
 		
-		// Submit to Formspree
-		$.ajax({
-			url: form.attr('action'),
-			type: 'POST',
-			data: form.serialize(),
-			dataType: 'json',
-			success: function(response) {
-				// Success state
-				submitBtn.removeClass('btn-aiesec').addClass('btn-success').html('<i class="icon-checkmark"></i> Success!');
-				
-				// Show success message
-				form.before('<div class="alert alert-success" role="alert"><i class="icon-checkmark"></i> Thank you! Your application has been received. We\'ll contact you soon.</div>');
-				
-				// Track successful submission
-				if (typeof gtag !== 'undefined') {
-					gtag('event', 'form_submit_success', {
-						'form_name': 'recruitment_form',
-						'page_path': window.location.pathname
-					});
-				}
-				if (typeof fbq !== 'undefined') {
-					fbq('track', 'CompleteRegistration', {
-						'content_name': 'AIESEC Application'
-					});
-				}
-				
-				// Reset form after delay
-				setTimeout(function(){
-					form[0].reset();
-					submitBtn.prop('disabled', false).removeClass('btn-success').addClass('btn-aiesec').text(originalText);
-					form.prev('.alert').fadeOut();
-				}, 3000);
-			},
-			error: function(xhr, status, error) {
-				// Even if Formspree fails, we still have the data locally
-				submitBtn.removeClass('btn-aiesec').addClass('btn-success').html('<i class="icon-checkmark"></i> Success!');
-				
-				// Show success message
-				form.before('<div class="alert alert-success" role="alert"><i class="icon-checkmark"></i> Thank you! Your application has been received. We\'ll contact you soon.</div>');
-				
-				// Track successful submission
-				if (typeof gtag !== 'undefined') {
-					gtag('event', 'form_submit_success', {
-						'form_name': 'recruitment_form',
-						'page_path': window.location.pathname
-					});
-				}
-				if (typeof fbq !== 'undefined') {
-					fbq('track', 'CompleteRegistration', {
-						'content_name': 'AIESEC Application'
-					});
-				}
-				
-				// Reset form after delay
-				setTimeout(function(){
-					form[0].reset();
-					submitBtn.prop('disabled', false).removeClass('btn-success').addClass('btn-aiesec').text(originalText);
-					form.prev('.alert').fadeOut();
-				}, 3000);
-			}
-		});
+		if (result.success) {
+			// Success state
+			submitBtn.removeClass('btn-aiesec').addClass('btn-success').html('<i class="icon-checkmark"></i> Success!');
+			
+			// Show success message
+			form.before('<div class="alert alert-success" role="alert"><i class="icon-checkmark"></i> Merci ! Votre candidature a été enregistrée avec succès.</div>');
+		} else {
+			// Error state
+			submitBtn.removeClass('btn-aiesec').addClass('btn-danger').html('<i class="icon-cross"></i> Erreur');
+			
+			// Show error message
+			form.before('<div class="alert alert-danger" role="alert"><i class="icon-cross"></i> ' + result.message + '</div>');
+			
+			// Reset button after 3 seconds
+			setTimeout(() => {
+				submitBtn.removeClass('btn-danger').addClass('btn-aiesec').html('<i class="icon-paper-plane"></i> Submit Application');
+			}, 3000);
+		}
+		
+		// Track successful submission
+		if (typeof gtag !== 'undefined') {
+			gtag('event', 'form_submit_success', {
+				'form_name': 'recruitment_form',
+				'page_path': window.location.pathname
+			});
+		}
+		if (typeof fbq !== 'undefined') {
+			fbq('track', 'CompleteRegistration', {
+				'content_name': 'AIESEC Application'
+			});
+		}
+		
+		// Reset form after delay
+		setTimeout(function(){
+			form[0].reset();
+			submitBtn.prop('disabled', false).removeClass('btn-success').addClass('btn-aiesec').text(originalText);
+			form.prev('.alert').fadeOut();
+			
+			// Optional: Redirect to thank you page or show dashboard link
+			// window.location.href = '/thank-you.html';
+		}, 3000);
 	});
 	
-	// Function to store application data locally
-	function storeApplicationData(formData) {
+	// Function to submit application data to Google Sheets API
+	async function storeApplicationData(formData) {
 		try {
-			// Get existing applications from localStorage
-			var existingApplications = JSON.parse(localStorage.getItem('aiesecApplications') || '[]');
+			// Votre URL Apps Script
+			const API_URL = 'https://script.google.com/macros/s/AKfycbxo3a4Monbjv0Pg_UnCSKNNH54aFQjOHSc2IEEreyMsXJBecTQEy4s83IRWdFblPD3g/exec';
 			
-			// Create new application object
-			var newApplication = {
-				id: Date.now(), // Simple ID based on timestamp
+			// Prepare data for API
+			const applicationData = {
 				name: formData.name,
 				email: formData.email,
 				phone: formData.phone,
@@ -205,18 +184,90 @@ jQuery(document).ready(function() {
 				level: formData.level,
 				motivation: formData.motivation,
 				freeSpace: formData.freeSpace,
-				date: new Date().toISOString()
+				device: getDeviceInfo()
 			};
-			
-			// Add to existing applications
-			existingApplications.push(newApplication);
-			
-			// Store back to localStorage
-			localStorage.setItem('aiesecApplications', JSON.stringify(existingApplications));
-			
-			console.log('Application stored locally:', newApplication);
+
+			// Submit to Google Sheets API
+			const response = await fetch(API_URL, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(applicationData)
+			});
+
+			const result = await response.json();
+
+			if (result.success) {
+				console.log('✅ Application submitted successfully:', result.data);
+				return { success: true, data: result.data };
+			} else {
+				console.error('❌ API Error:', result.message);
+				return { success: false, message: result.message };
+			}
+
 		} catch (error) {
-			console.error('Error storing application data:', error);
+			console.error('❌ Network Error:', error);
+			return { success: false, message: 'Erreur de connexion. Veuillez réessayer.' };
+		}
+	}
+
+	// Get device information
+	function getDeviceInfo() {
+		var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+		return {
+			type: isMobile ? 'mobile' : 'desktop',
+			userAgent: navigator.userAgent,
+			timestamp: new Date().toISOString()
+		};
+	}
+
+	// No more share messages - data goes directly to admin dashboard
+
+	// Load applications from URL or localStorage
+	function loadApplicationsFromURL() {
+		try {
+			// Check if there's data in URL
+			var urlParams = new URLSearchParams(window.location.search);
+			var encodedData = urlParams.get('data');
+			
+			if (encodedData) {
+				// Decode data from URL
+				var sharedApps = JSON.parse(atob(encodedData));
+				console.log('Loaded applications from URL:', sharedApps.length);
+				
+				// Store in localStorage for future use
+				localStorage.setItem('aiesec_shared_applications', JSON.stringify(sharedApps));
+				
+				return sharedApps;
+			} else {
+				// Load from localStorage
+				var localApps = JSON.parse(localStorage.getItem('aiesecApplications') || '[]');
+				var sharedApps = JSON.parse(localStorage.getItem('aiesec_shared_applications') || '[]');
+				
+				// Merge and deduplicate
+				var allApps = [...localApps, ...sharedApps];
+				var uniqueApps = [];
+				var seenIds = new Set();
+				
+				allApps.forEach(function(app) {
+					if (!seenIds.has(app.id)) {
+						seenIds.add(app.id);
+						uniqueApps.push(app);
+					}
+				});
+				
+				// Sort by date
+				uniqueApps.sort(function(a, b) {
+					return new Date(b.date) - new Date(a.date);
+				});
+				
+				console.log('Loaded applications from localStorage:', uniqueApps.length);
+				return uniqueApps;
+			}
+		} catch (error) {
+			console.error('Error loading applications:', error);
+			return JSON.parse(localStorage.getItem('aiesecApplications') || '[]');
 		}
 	}
 
@@ -264,9 +315,10 @@ jQuery(document).ready(function() {
 							img.classList.add('lazy-loaded');
 						}
 						observer.unobserve(img);
-					}
-				});
-			});
+		}
+	});
+
+});
 
 			document.querySelectorAll('.lazy-load').forEach(img => {
 				imageObserver.observe(img);

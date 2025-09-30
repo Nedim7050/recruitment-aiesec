@@ -1,153 +1,59 @@
 /**
- * AIESEC Carthage - Service Worker
- * Progressive Web App functionality
+ * AIESEC Carthage - Service Worker (NO CACHE MODE)
+ * Désactivé pour éviter les problèmes de cache
  */
 
-const CACHE_NAME = 'aiesec-carthage-v1.0.0';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/login.html',
-  '/dashboard.html',
-  '/thank-you.html',
-  '/css/styles-merged.css',
-  '/css/style.min.css',
-  '/css/custom.css',
-  '/js/scripts.min.js',
-  '/js/main.min.js',
-  '/js/custom.js',
-  '/manifest.json',
-  'https://fonts.googleapis.com/css?family=Raleway:300,400,500,700|Open+Sans',
-  'https://res.cloudinary.com/dfgycmek8/image/upload/v1759068513/AIESEC-Human-White_htki3i.png',
-  'https://res.cloudinary.com/dfgycmek8/image/upload/v1759068747/Blue-Logo_yo9rwt.jpg'
-];
+const CACHE_NAME = 'aiesec-no-cache-' + Date.now();
 
-// Install event - cache resources
+// Install - Skip caching
 self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
-      .catch(function(error) {
-        console.log('Cache installation failed:', error);
-      })
-  );
+  console.log('[SW] Installing... NO CACHE MODE');
+  self.skipWaiting(); // Activate immediately
 });
 
-// Fetch event - serve from cache, fallback to network
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        // Return cached version or fetch from network
-        if (response) {
-          return response;
-        }
-        
-        // Clone the request
-        const fetchRequest = event.request.clone();
-        
-        return fetch(fetchRequest).then(function(response) {
-          // Check if valid response
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-          
-          // Clone the response
-          const responseToCache = response.clone();
-          
-          caches.open(CACHE_NAME)
-            .then(function(cache) {
-              cache.put(event.request, responseToCache);
-            });
-          
-          return response;
-        }).catch(function() {
-          // Return offline page if available
-          if (event.request.destination === 'document') {
-            return caches.match('/index.html');
-          }
-        });
-      })
-  );
-});
-
-// Activate event - clean up old caches
+// Activate - Delete ALL caches
 self.addEventListener('activate', function(event) {
+  console.log('[SW] Activating... Clearing ALL caches');
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
         cacheNames.map(function(cacheName) {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
+          console.log('[SW] Deleting cache:', cacheName);
+          return caches.delete(cacheName);
         })
       );
+    }).then(function() {
+      console.log('[SW] All caches cleared');
+      return self.clients.claim();
     })
   );
 });
 
-// Background sync for form submissions (if supported)
-self.addEventListener('sync', function(event) {
-  if (event.tag === 'background-sync') {
-    event.waitUntil(doBackgroundSync());
-  }
-});
-
-function doBackgroundSync() {
-  // Handle offline form submissions
-  return new Promise(function(resolve) {
-    // Implementation would go here
-    console.log('Background sync triggered');
-    resolve();
-  });
-}
-
-// Push notifications (if needed)
-self.addEventListener('push', function(event) {
-  if (event.data) {
-    const data = event.data.json();
-    const options = {
-      body: data.body,
-      icon: '/img/logo.png',
-      badge: '/img/logo.png',
-      vibrate: [100, 50, 100],
-      data: {
-        dateOfArrival: Date.now(),
-        primaryKey: 1
-      },
-      actions: [
-        {
-          action: 'explore',
-          title: 'Learn More',
-          icon: '/img/logo.png'
-        },
-        {
-          action: 'close',
-          title: 'Close',
-          icon: '/img/logo.png'
-        }
-      ]
-    };
-    
-    event.waitUntil(
-      self.registration.showNotification(data.title, options)
-    );
-  }
-});
-
-// Notification click handler
-self.addEventListener('notificationclick', function(event) {
-  event.notification.close();
+// Fetch - ALWAYS fetch fresh from network (NO CACHE)
+self.addEventListener('fetch', function(event) {
+  console.log('[SW] Fetching FRESH:', event.request.url);
   
-  if (event.action === 'explore') {
-    event.waitUntil(
-      clients.openWindow('/')
-    );
-  }
+  event.respondWith(
+    fetch(event.request.clone(), {
+      cache: 'no-store' // Force no cache
+    })
+    .then(function(response) {
+      // Return fresh response, never cache
+      console.log('[SW] Fresh response for:', event.request.url);
+      return response;
+    })
+    .catch(function(error) {
+      console.error('[SW] Fetch failed:', error);
+      // Return a basic error response
+      return new Response('Network error - Please check your connection', {
+        status: 503,
+        statusText: 'Service Unavailable',
+        headers: new Headers({
+          'Content-Type': 'text/plain'
+        })
+      });
+    })
+  );
 });
 
-
+console.log('[SW] Service Worker loaded in NO CACHE mode');

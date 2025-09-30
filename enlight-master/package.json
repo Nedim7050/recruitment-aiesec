@@ -1,50 +1,24 @@
 {
-  "name": "aiesec-carthage",
+  "name": "aiesec-carthage-backend",
   "version": "1.0.0",
-  "description": "AIESEC Carthage - Join Your Leadership Journey",
-  "main": "index.html",
+  "description": "Backend API for AIESEC Carthage recruitment form",
+  "main": "api/index.js",
   "scripts": {
-    "start": "npx serve .",
-    "build": "echo 'No build process needed for static site'",
-    "deploy": "vercel --prod",
-    "dev": "npx serve . -l 3000",
-    "lint": "echo 'Linting not configured'",
-    "test": "echo 'Tests not configured'"
+    "start": "node api/index.js",
+    "dev": "nodemon api/index.js"
   },
-  "keywords": [
-    "aiesec",
-    "carthage",
-    "tunisia",
-    "leadership",
-    "youth",
-    "education",
-    "recruitment"
-  ],
-  "author": "AIESEC Carthage",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yourusername/aiesec-carthage.git"
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
   },
-  "homepage": "https://aiesec-carthage.vercel.app",
   "devDependencies": {
-    "gulp": "latest",
-    "gulp-sass": "latest",
-    "gulp-uglify": "latest",
-    "gulp-rename": "latest",
-    "gulp-notify": "latest",
-    "gulp-minify-css": "latest",
-    "gulp-concat": "latest",
-    "gulp-plumber": "latest",
-    "browser-sync": "latest",
-    "gulp-sourcemaps": "latest",
-    "gulp-autoprefixer": "latest",
-    "gulp-clean-css": "latest",
-    "serve": "^14.2.1",
-    "vercel": "^32.0.0"
+    "nodemon": "^3.0.1"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=18.0.0"
   }
 }

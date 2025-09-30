@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AIESEC Carthage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 1rem;
+            border-left: 4px solid #667eea;
+        }
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginSection" class="login-container">
+        <div class="login-card">
+            <div class="text-center mb-4">
+                <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
+                <p class="text-muted">AIESEC Carthage Dashboard</p>
+            </div>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe admin</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+            </form>
+            <div id="loginError" class="alert alert-danger mt-3 hidden" role="alert"></div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboardSection" class="hidden">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1><i class="fas fa-tachometer-alt"></i> Dashboard Admin</h1>
+                        <p class="mb-0">Gestion des candidatures AIESEC Carthage</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button id="logoutBtn" class="btn btn-danger">
+                            <i class="fas fa-sign-out-alt"></i> Déconnexion
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Statistics -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted mb-1">Total Candidatures</h6>
+                                <div class="stats-number" id="totalCandidatures">0</div>
+                            </div>
+                            <i class="fas fa-users fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted mb-1">Aujourd'hui</h6>
+                                <div class="stats-number" id="todayCandidatures">0</div>
+                            </div>
+                            <i class="fas fa-calendar-day fa-2x text-success"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted mb-1">Mobile</h6>
+                                <div class="stats-number" id="mobileCandidatures">0</div>
+                            </div>
+                            <i class="fas fa-mobile-alt fa-2x text-info"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted mb-1">Desktop</h6>
+                                <div class="stats-number" id="desktopCandidatures">0</div>
+                            </div>
+                            <i class="fas fa-desktop fa-2x text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="table-container">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5><i class="fas fa-list"></i> Liste des Candidatures</h5>
+                            <div>
+                                <button id="refreshBtn" class="btn btn-primary">
+                                    <i class="fas fa-sync-alt"></i> Actualiser
+                                </button>
+                                <button id="exportBtn" class="btn btn-success">
+                                    <i class="fas fa-download"></i> Exporter
+                                </button>
+                                <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit" target="_blank" class="btn btn-info">
+                                    <i class="fas fa-external-link-alt"></i> Voir Google Sheet
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table id="candidaturesTable" class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Email</th>
+                                        <th>Téléphone</th>
+                                        <th>Université</th>
+                                        <th>Âge</th>
+                                        <th>Niveau</th>
+                                        <th>Date</th>
+                                        <th>Appareil</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="candidaturesTableBody">
+                                    <!-- Data will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Candidature Details Modal -->
+    <div class="modal fade" id="candidatureModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Détails de la Candidature</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="candidatureDetails">
+                    <!-- Details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        // Configuration
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxo3a4Monbjv0Pg_UnCSKNNH54aFQjOHSc2IEEreyMsXJBecTQEy4s83IRWdFblPD3g/exec';
+        const ADMIN_PASSWORD = 'admin123'; // Même mot de passe que dans Apps Script
+        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit'; // Remplacez par votre URL Google Sheet
+
+        let candidaturesData = [];
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            if (password === ADMIN_PASSWORD) {
+                showDashboard();
+            } else {
+                errorDiv.textContent = 'Mot de passe incorrect';
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            showLogin();
+        });
+
+        // Show login form
+        function showLogin() {
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('dashboardSection').classList.add('hidden');
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            loadCandidatures();
+        }
+
+        // Load candidatures from Google Sheets
+        async function loadCandidatures() {
+            try {
+                const response = await fetch(`${API_URL}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    candidaturesData = result.data;
+                    displayCandidatures(candidaturesData);
+                    updateStats(candidaturesData);
+                } else {
+                    console.error('Error loading candidatures:', result.message);
+                    alert('Erreur lors du chargement des candidatures: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                alert('Erreur de connexion. Vérifiez votre connexion internet.');
+            }
+        }
+
+        // Update statistics
+        function updateStats(data) {
+            const total = data.length;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const todayCount = data.filter(item => {
+                const itemDate = new Date(item.date);
+                itemDate.setHours(0, 0, 0, 0);
+                return itemDate.getTime() === today.getTime();
+            }).length;
+            
+            const mobileCount = data.filter(item => item.device?.type === 'mobile').length;
+            const desktopCount = data.filter(item => item.device?.type === 'desktop').length;
+            
+            document.getElementById('totalCandidatures').textContent = total;
+            document.getElementById('todayCandidatures').textContent = todayCount;
+            document.getElementById('mobileCandidatures').textContent = mobileCount;
+            document.getElementById('desktopCandidatures').textContent = desktopCount;
+        }
+
+        // Display candidatures in table
+        function displayCandidatures(candidatures) {
+            const tbody = document.getElementById('candidaturesTableBody');
+            tbody.innerHTML = '';
+            
+            candidatures.forEach(candidature => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${candidature.name}</td>
+                    <td>${candidature.email}</td>
+                    <td>${candidature.phone}</td>
+                    <td>${candidature.university}</td>
+                    <td>${candidature.age}</td>
+                    <td>${candidature.level}</td>
+                    <td>${new Date(candidature.date).toLocaleDateString('fr-FR')}</td>
+                    <td>
+                        <span class="badge ${candidature.device?.type === 'mobile' ? 'bg-info' : 'bg-warning'}">
+                            ${candidature.device?.type || 'Unknown'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="viewCandidature('${candidature.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            // Initialize DataTable
+            if ($.fn.DataTable.isDataTable('#candidaturesTable')) {
+                $('#candidaturesTable').DataTable().destroy();
+            }
+            $('#candidaturesTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json'
+                },
+                pageLength: 25,
+                order: [[6, 'desc']] // Sort by date descending
+            });
+        }
+
+        // View candidature details
+        function viewCandidature(id) {
+            const candidature = candidaturesData.find(c => c.id === id);
+            if (candidature) {
+                const modalBody = document.getElementById('candidatureDetails');
+                modalBody.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Informations Personnelles</h6>
+                            <p><strong>Nom:</strong> ${candidature.name}</p>
+                            <p><strong>Email:</strong> ${candidature.email}</p>
+                            <p><strong>Téléphone:</strong> ${candidature.phone}</p>
+                            <p><strong>Université:</strong> ${candidature.university}</p>
+                            <p><strong>Âge:</strong> ${candidature.age}</p>
+                            <p><strong>Niveau:</strong> ${candidature.level}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Informations Techniques</h6>
+                            <p><strong>Date de candidature:</strong> ${new Date(candidature.date).toLocaleString('fr-FR')}</p>
+                            <p><strong>Appareil:</strong> ${candidature.device?.type || 'Unknown'}</p>
+                            <p><strong>User Agent:</strong> <small>${candidature.device?.userAgent || 'N/A'}</small></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <h6>Motivation</h6>
+                            <p>${candidature.motivation}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h6>Espace Libre</h6>
+                            <p>${candidature.freeSpace}</p>
+                        </div>
+                    </div>
+                `;
+                
+                const modal = new bootstrap.Modal(document.getElementById('candidatureModal'));
+                modal.show();
+            }
+        }
+
+        // Refresh data
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            loadCandidatures();
+        });
+
+        // Export data
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            const csvContent = generateCSV(candidaturesData);
+            downloadCSV(csvContent, 'candidatures-aiesec-carthage.csv');
+        });
+
+        // Generate CSV
+        function generateCSV(data) {
+            const headers = ['Nom', 'Email', 'Téléphone', 'Université', 'Âge', 'Niveau', 'Motivation', 'Espace Libre', 'Date', 'Appareil'];
+            const csvRows = [headers.join(',')];
+            
+            data.forEach(candidature => {
+                const row = [
+                    `"${candidature.name}"`,
+                    `"${candidature.email}"`,
+                    `"${candidature.phone}"`,
+                    `"${candidature.university}"`,
+                    candidature.age,
+                    `"${candidature.level}"`,
+                    `"${candidature.motivation.replace(/"/g, '""')}"`,
+                    `"${candidature.freeSpace.replace(/"/g, '""')}"`,
+                    new Date(candidature.date).toLocaleDateString('fr-FR'),
+                    candidature.device?.type || 'Unknown'
+                ];
+                csvRows.push(row.join(','));
+            });
+            
+            return csvRows.join('\n');
+        }
+
+        // Download CSV
+        function downloadCSV(content, filename) {
+            const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Initialize
+        window.addEventListener('load', function() {
+            showLogin();
+        });
+    </script>
+</body>
+</html>

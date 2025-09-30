@@ -455,9 +455,17 @@
         <div class="table-container">
             <div class="table-header">
                 <h3><i class="fas fa-list"></i> Recruitment Applications</h3>
+                <div style="display: flex; gap: 10px;">
                 <button class="refresh-btn" onclick="refreshData()">
                     <i class="fas fa-sync-alt"></i> Refresh
                 </button>
+                    <button class="refresh-btn" onclick="exportAllData()" style="background: #28a745;">
+                        <i class="fas fa-download"></i> Export All
+                    </button>
+                    <button class="refresh-btn" onclick="importData()" style="background: #17a2b8;">
+                        <i class="fas fa-upload"></i> Import
+                </button>
+                </div>
             </div>
             <div class="dataTables_wrapper">
                 <table id="applications-table" class="table table-striped">
@@ -517,63 +525,40 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
-        // Load applications from localStorage
+        // Load applications from global storage
         function loadApplicationsFromStorage() {
             try {
-                const storedApplications = localStorage.getItem('aiesecApplications');
-                if (storedApplications) {
-                    return JSON.parse(storedApplications);
-                }
+                console.log('Loading applications from global storage...');
+                
+                // Use the same global key as the form
+                var globalKey = 'aiesec_global_data_' + new Date().getFullYear() + '_' + (new Date().getMonth() + 1);
+                
+                // Get applications from global storage
+                var applicationsData = localStorage.getItem(globalKey) || '[]';
+                var applications = JSON.parse(applicationsData);
+                
+                console.log('Loaded applications from global storage:', applications.length);
+                
+                // Sort by date (newest first)
+                applications.sort(function(a, b) {
+                    return new Date(b.date) - new Date(a.date);
+                });
+                
+                return applications;
             } catch (error) {
-                console.error('Error loading applications from storage:', error);
+                console.error('Error loading applications:', error);
+                return [];
             }
-            
-            // Fallback to sample data if no stored data
-            return [
-                {
-                    id: 1,
-                    name: "Ahmed Ben Ali",
-                    email: "ahmed.benali@email.com",
-                    phone: "+216 55 123 456",
-                    university: "Université de Tunis",
-                    age: 22,
-                    level: "Bachelor in Computer Science",
-                    motivation: "I am passionate about leadership and want to make a positive impact in my community through AIESEC.",
-                    freeSpace: "I have experience in event organization and would love to contribute to AIESEC's activities.",
-                    date: "2025-01-29T14:30:00.000Z"
-                },
-                {
-                    id: 2,
-                    name: "Fatma Khelil",
-                    email: "fatma.khelil@email.com",
-                    phone: "+216 98 765 432",
-                    university: "Université de Carthage",
-                    age: 20,
-                    level: "Bachelor in Business Administration",
-                    motivation: "AIESEC represents everything I believe in - global citizenship, leadership development, and cultural exchange.",
-                    freeSpace: "I'm interested in the Global Volunteer program. When does the next application period start?",
-                    date: "2025-01-29T16:45:00.000Z"
-                },
-                {
-                    id: 3,
-                    name: "Mohamed Trabelsi",
-                    email: "mohamed.trabelsi@email.com",
-                    phone: "+216 22 333 444",
-                    university: "Université de Sfax",
-                    age: 24,
-                    level: "Master in International Relations",
-                    motivation: "I want to develop my leadership skills and connect with young people from around the world.",
-                    freeSpace: "I speak French, English, and Arabic fluently. I can help with translation and communication.",
-                    date: "2025-01-28T10:15:00.000Z"
-                }
-            ];
         }
 
-        let applicationsData = loadApplicationsFromStorage();
+        let applicationsData = [];
         let currentApplication = null;
 
         // Initialize dashboard
         $(document).ready(function() {
+            // Load data first, then initialize
+            applicationsData = loadApplicationsFromStorage();
+            console.log('Dashboard loaded with', applicationsData.length, 'applications');
             updateStats();
             initializeTable();
             updateCurrentTime();
@@ -873,7 +858,7 @@
             }, 5000);
         }
 
-        // Refresh data
+        // Refresh data - reload from URL and localStorage
         function refreshData() {
             const refreshBtn = document.querySelector('.refresh-btn');
             const originalText = refreshBtn.innerHTML;
@@ -881,8 +866,11 @@
             refreshBtn.disabled = true;
             
             setTimeout(() => {
-                // Reload applications from localStorage
+                const previousCount = applicationsData.length;
                 applicationsData = loadApplicationsFromStorage();
+                const newCount = applicationsData.length;
+                
+                console.log(`Refresh: ${previousCount} -> ${newCount} applications`);
                 
                 // Destroy existing DataTable
                 if ($.fn.DataTable.isDataTable('#applications-table')) {
@@ -900,15 +888,136 @@
                 
                 refreshBtn.innerHTML = originalText;
                 refreshBtn.disabled = false;
-                console.log('Data refreshed from localStorage');
+                
+                // Show refresh success message
+                if (newCount > previousCount) {
+                    showRefreshMessage(`Data refreshed! ${newCount - previousCount} new applications found.`);
+                } else {
+                    showRefreshMessage('Data refreshed! No new applications.');
+                }
             }, 1000);
         }
+        
+        // Show refresh message
+        function showRefreshMessage(message) {
+            const refreshMsg = document.createElement('div');
+            refreshMsg.className = 'alert alert-info alert-dismissible fade show';
+            refreshMsg.style.position = 'fixed';
+            refreshMsg.style.top = '20px';
+            refreshMsg.style.right = '20px';
+            refreshMsg.style.zIndex = '9999';
+            refreshMsg.style.minWidth = '300px';
+            refreshMsg.innerHTML = `
+                <i class="fas fa-info-circle"></i>
+                <strong>Refresh Complete!</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            document.body.appendChild(refreshMsg);
+            
+            setTimeout(() => {
+                if (refreshMsg.parentNode) {
+                    refreshMsg.remove();
+                }
+            }, 3000);
+        }
 
-        // Simulate real-time updates
+        // Export all data function
+        function exportAllData() {
+            const data = {
+                applications: applicationsData,
+                exportDate: new Date().toISOString(),
+                totalApplications: applicationsData.length
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `aiesec-applications-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showMessage('All applications exported successfully!', 'success');
+        }
+
+        // Import data function
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            if (data.applications && Array.isArray(data.applications)) {
+                                // Merge with existing data (avoid duplicates)
+                                const existingIds = applicationsData.map(app => app.id);
+                                const newApplications = data.applications.filter(app => !existingIds.includes(app.id));
+                                
+                                applicationsData = [...applicationsData, ...newApplications];
+                                localStorage.setItem('aiesecApplications', JSON.stringify(applicationsData));
+                                
+                                // Refresh table
+                                if ($.fn.DataTable.isDataTable('#applications-table')) {
+                                    $('#applications-table').DataTable().destroy();
+                                }
+                                $('#applications-tbody').empty();
+                                initializeTable();
+                                updateStats();
+                                
+                                showMessage(`Imported ${newApplications.length} new applications successfully!`, 'success');
+                            } else {
+                                showMessage('Invalid file format!', 'error');
+                            }
+                        } catch (error) {
+                            showMessage('Error reading file: ' + error.message, 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        // Show message function
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+            messageDiv.style.position = 'fixed';
+            messageDiv.style.top = '20px';
+            messageDiv.style.right = '20px';
+            messageDiv.style.zIndex = '9999';
+            messageDiv.style.minWidth = '300px';
+            messageDiv.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <strong>${type === 'success' ? 'Success!' : 'Error!'}</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Auto-sync function (check for updates every 10 seconds)
         setInterval(() => {
-            // In a real application, you would check for new applications here
-            // and update the table accordingly
-        }, 30000); // Check every 30 seconds
+            // Check for new applications in localStorage
+            const currentData = loadApplicationsFromStorage();
+            if (currentData.length !== applicationsData.length) {
+                console.log('New applications detected, refreshing...');
+                refreshData();
+            }
+        }, 10000); // Check every 10 seconds
     </script>
 </body>
 </html>
