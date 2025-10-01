@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - AIESEC Carthage - FINAL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .dashboard-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem 0; }
+        .stats-card { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 1rem; }
+        .stats-number { font-size: 2rem; font-weight: bold; color: #667eea; }
+        .login-container { max-width: 400px; margin: 100px auto; }
+        .login-card { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .btn-login { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 12px 30px; border-radius: 25px; }
+        .table-container { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .hidden { display: none !important; }
+        .stats-card:hover { transform: translateY(-2px); transition: transform 0.3s ease; }
+        .candidate-row:hover { background-color: #f8f9fa !important; }
+        .loading { opacity: 0.6; pointer-events: none; }
+        .export-all-btn { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none; }
+        .export-all-btn:hover { background: linear-gradient(135deg, #218838 0%, #1ea085 100%); }
+        .text-purple { color: #6f42c1 !important; }
+        .list-group-item { border: none; border-bottom: 1px solid #eee; }
+        .list-group-item:last-child { border-bottom: none; }
+        .university-item { display: flex; justify-content: space-between; align-items: center; }
+        .university-count { background: #667eea; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; }
+        .chart-container { position: relative; height: 200px; }
+        .stats-card { transition: all 0.3s ease; padding: 0.75rem; }
+        .stats-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .stats-card i { font-size: 1.5rem !important; }
+        .stats-number { font-size: 1.5rem; font-weight: bold; }
+        .table-container { padding: 0.75rem; }
+        .table-container h5 { font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .university-count { font-size: 0.7rem; padding: 2px 6px; }
+        .list-group-item { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <!-- Dashboard Section -->
+    <div id="dashboardSection">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1><i class="fas fa-tachometer-alt"></i> Dashboard Admin</h1>
+                        <p class="mb-0">Gestion des candidatures AIESEC Carthage</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button id="logoutBtn" class="btn btn-outline-light">
+                            <i class="fas fa-sign-out-alt"></i> Déconnexion
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                        <div class="stats-number" id="totalCandidates">0</div>
+                        <div class="text-muted">Total Candidatures</div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-mobile-alt fa-2x text-success mb-2"></i>
+                        <div class="stats-number" id="mobileCandidates">0</div>
+                        <div class="text-muted">Mobile</div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-desktop fa-2x text-info mb-2"></i>
+                        <div class="stats-number" id="desktopCandidates">0</div>
+                        <div class="text-muted">Desktop</div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-calendar-day fa-2x text-warning mb-2"></i>
+                        <div class="stats-number" id="todayCandidates">0</div>
+                        <div class="text-muted">Aujourd'hui</div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-university fa-2x text-purple mb-2"></i>
+                        <div class="stats-number" id="uniqueUniversities">0</div>
+                        <div class="text-muted">Universités</div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-chart-line fa-2x text-danger mb-2"></i>
+                        <div class="stats-number" id="weeklyGrowth">0%</div>
+                        <div class="text-muted">Croissance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="table-container">
+                        <h5><i class="fas fa-chart-line"></i> Tendance (7 jours)</h5>
+                        <div style="height: 200px;">
+                            <canvas id="candidatesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3">
+                    <div class="table-container">
+                        <h5><i class="fas fa-chart-pie"></i> Appareils</h5>
+                        <div style="height: 200px;">
+                            <canvas id="deviceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-3">
+                    <div class="table-container">
+                        <h5><i class="fas fa-university"></i> Top 5 Universités</h5>
+                        <div id="universitiesList" class="list-group" style="max-height: 200px; overflow-y: auto;">
+                            <!-- Les universités seront chargées ici -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="container mt-3">
+            <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="candidates-tab" data-bs-toggle="tab" data-bs-target="#candidates" type="button">
+                        <i class="fas fa-users"></i> Candidatures
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contacts-tab" data-bs-toggle="tab" data-bs-target="#contacts" type="button">
+                        <i class="fas fa-envelope"></i> Messages de Contact
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="container mt-3">
+            <div class="tab-content" id="dashboardTabContent">
+                <!-- Candidatures Tab -->
+                <div class="tab-pane fade show active" id="candidates" role="tabpanel">
+                    <div class="table-container">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4><i class="fas fa-list"></i> Liste des Candidatures <span class="badge bg-primary ms-2" id="candidatesCount">0</span></h4>
+                            <div class="btn-group" role="group">
+                                <button id="exportAllBtn" class="btn export-all-btn text-white" title="Exporter toutes les candidatures">
+                                    <i class="fas fa-download"></i> Exporter Tout
+                                </button>
+                                <button id="refreshBtn" class="btn btn-primary">
+                                    <i class="fas fa-sync-alt"></i> Actualiser
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="candidatesTable" class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nom</th>
+                                        <th>Email</th>
+                                        <th>Téléphone</th>
+                                        <th>Université</th>
+                                        <th>Âge</th>
+                                        <th>Niveau</th>
+                                        <th>Motivation</th>
+                                        <th>Espace Libre</th>
+                                        <th>Date</th>
+                                        <th>Appareil</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Les données seront chargées ici -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Messages de Contact Tab -->
+                <div class="tab-pane fade" id="contacts" role="tabpanel">
+                    <div class="table-container">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4><i class="fas fa-envelope-open-text"></i> Messages de Contact</h4>
+                            <button id="refreshContactsBtn" class="btn btn-primary">
+                                <i class="fas fa-sync-alt"></i> Actualiser
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="contactsTable" class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Email</th>
+                                        <th>Message</th>
+                                        <th>Appareil</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Les données seront chargées ici -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Configuration
+        const GOOGLE_SHEETS_API_CANDIDATES = 'https://script.google.com/macros/s/AKfycbxo3a4Monbjv0Pg_UnCSKNNH54aFQjOHSc2IEEreyMsXJBecTQEy4s83IRWdFblPD3g/exec';
+        const GOOGLE_SHEETS_API_CONTACTS = 'https://script.google.com/macros/s/AKfycbw1DNcOCFE0Pcbpm1iL8YOJ8kPk9EzJ_VG3FLQ7BMicxi9uUyuc7vPu6Qj7yvfAd9-7/exec?action=getData';
+        
+        let candidatesData = [];
+        let contactsData = [];
+        let dataTable;
+        let contactsTable;
+        let chartInstances = {};
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Charger les candidatures
+        async function loadCandidates() {
+            try {
+                console.log('🔄 Chargement des candidatures...');
+                
+                // Afficher l'indicateur de chargement
+                const refreshBtn = document.getElementById('refreshBtn');
+                const originalText = refreshBtn.innerHTML;
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Chargement...';
+                refreshBtn.disabled = true;
+                
+                const response = await fetch(GOOGLE_SHEETS_API_CANDIDATES);
+                const result = await response.json();
+                
+                if (result.success) {
+                    candidatesData = result.data || [];
+                    updateStats();
+                    updateTable();
+                    updateCharts();
+                    updateUniversitiesList();
+                    console.log('✅ Candidatures chargées:', candidatesData.length);
+                    
+                    // Afficher un message de succès temporaire
+                    showNotification('Candidatures chargées avec succès', 'success');
+                } else {
+                    console.error('❌ Erreur:', result.message);
+                    showNotification('Erreur lors du chargement: ' + result.message, 'error');
+                }
+            } catch (error) {
+                console.error('❌ Erreur de connexion:', error);
+                showNotification('Erreur de connexion au serveur', 'error');
+            } finally {
+                // Restaurer le bouton
+                const refreshBtn = document.getElementById('refreshBtn');
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Actualiser';
+                refreshBtn.disabled = false;
+            }
+        }
+
+        // Afficher une notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(notification);
+            
+            // Supprimer automatiquement après 3 secondes
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        // Mettre à jour les statistiques
+        function updateStats() {
+            const total = candidatesData.length;
+            const mobile = candidatesData.filter(c => c.Appareil === 'mobile').length;
+            const desktop = candidatesData.filter(c => c.Appareil === 'desktop').length;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const todayCount = candidatesData.filter(c => {
+                const candidateDate = new Date(c.Date).toISOString().split('T')[0];
+                return candidateDate === today;
+            }).length;
+            
+            // Compter les universités uniques
+            const uniqueUniversities = new Set(candidatesData.map(c => c.Université).filter(u => u && u.trim() !== '')).size;
+            
+            // Calculer la croissance hebdomadaire
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            const lastWeekCount = candidatesData.filter(c => new Date(c.Date) >= oneWeekAgo).length;
+            const previousWeekCount = total - lastWeekCount;
+            const weeklyGrowth = previousWeekCount > 0 ? Math.round(((lastWeekCount - previousWeekCount) / previousWeekCount) * 100) : 0;
+            
+            document.getElementById('totalCandidates').textContent = total;
+            document.getElementById('mobileCandidates').textContent = mobile;
+            document.getElementById('desktopCandidates').textContent = desktop;
+            document.getElementById('todayCandidates').textContent = todayCount;
+            document.getElementById('uniqueUniversities').textContent = uniqueUniversities;
+            document.getElementById('weeklyGrowth').textContent = weeklyGrowth > 0 ? `+${weeklyGrowth}%` : `${weeklyGrowth}%`;
+            document.getElementById('candidatesCount').textContent = total;
+        }
+
+        // Mettre à jour le tableau
+        function updateTable() {
+            const tbody = document.querySelector('#candidatesTable tbody');
+            tbody.innerHTML = '';
+            
+            candidatesData.forEach(candidate => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><span class="badge bg-secondary">${candidate.ID || '-'}</span></td>
+                    <td><strong>${candidate.Nom || '-'}</strong></td>
+                    <td><a href="mailto:${candidate.Email}" class="text-decoration-none">${candidate.Email || '-'}</a></td>
+                    <td><a href="tel:${candidate.Téléphone}" class="text-decoration-none">${candidate.Téléphone || '-'}</a></td>
+                    <td>${candidate.Université || '-'}</td>
+                    <td><span class="badge bg-info">${candidate.Âge || '-'}</span></td>
+                    <td>${candidate.Niveau || '-'}</td>
+                    <td><span class="text-truncate d-inline-block" style="max-width: 200px;" title="${candidate.Motivation || ''}">${candidate.Motivation || '-'}</span></td>
+                    <td><span class="text-truncate d-inline-block" style="max-width: 150px;" title="${candidate['Espace Libre'] || ''}">${candidate['Espace Libre'] || '-'}</span></td>
+                    <td><small class="text-muted">${candidate.Date ? new Date(candidate.Date).toLocaleDateString('fr-FR') : '-'}</small></td>
+                    <td><span class="badge ${candidate.Appareil === 'mobile' ? 'bg-success' : 'bg-primary'}">${candidate.Appareil || '-'}</span></td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewDetails('${candidate.ID}')" title="Voir détails">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                            <button class="btn btn-sm btn-outline-success" onclick="exportCandidate('${candidate.ID}')" title="Exporter">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            // Initialiser DataTable si pas déjà fait
+            if (!dataTable) {
+                dataTable = $('#candidatesTable').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json'
+                    },
+                    pageLength: 25,
+                    order: [[9, 'desc']], // Trier par date décroissante
+                    columnDefs: [
+                        { targets: [7, 8], orderable: false }, // Désactiver le tri sur Motivation et Espace Libre
+                        { targets: [0, 5, 10], className: 'text-center' } // Centrer certaines colonnes
+                    ],
+                    responsive: true
+                });
+            } else {
+                dataTable.clear().rows.add($('#candidatesTable tbody tr')).draw();
+            }
+        }
+
+        // Voir les détails d'une candidature
+        function viewDetails(candidateId) {
+            const candidate = candidatesData.find(c => c.ID == candidateId);
+            if (candidate) {
+                const modal = document.createElement('div');
+                modal.className = 'modal fade';
+                modal.innerHTML = `
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title"><i class="fas fa-user"></i> Détails de la Candidature</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-id-card text-primary"></i> Informations Personnelles</h6>
+                                        <table class="table table-sm">
+                                            <tr><td><strong>ID:</strong></td><td><span class="badge bg-secondary">${candidate.ID}</span></td></tr>
+                                            <tr><td><strong>Nom:</strong></td><td>${candidate.Nom}</td></tr>
+                                            <tr><td><strong>Email:</strong></td><td><a href="mailto:${candidate.Email}">${candidate.Email}</a></td></tr>
+                                            <tr><td><strong>Téléphone:</strong></td><td><a href="tel:${candidate.Téléphone}">${candidate.Téléphone}</a></td></tr>
+                                            <tr><td><strong>Âge:</strong></td><td><span class="badge bg-info">${candidate.Âge} ans</span></td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-graduation-cap text-success"></i> Informations Académiques</h6>
+                                        <table class="table table-sm">
+                                            <tr><td><strong>Université:</strong></td><td>${candidate.Université}</td></tr>
+                                            <tr><td><strong>Niveau:</strong></td><td>${candidate.Niveau}</td></tr>
+                                            <tr><td><strong>Appareil:</strong></td><td><span class="badge ${candidate.Appareil === 'mobile' ? 'bg-success' : 'bg-primary'}">${candidate.Appareil}</span></td></tr>
+                                            <tr><td><strong>Date:</strong></td><td><small class="text-muted">${new Date(candidate.Date).toLocaleString('fr-FR')}</small></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <h6><i class="fas fa-heart text-danger"></i> Motivation</h6>
+                                        <div class="alert alert-light">
+                                            <p class="mb-0">${candidate.Motivation || 'Aucune motivation fournie'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                ${candidate['Espace Libre'] ? `
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <h6><i class="fas fa-comment text-info"></i> Informations Supplémentaires</h6>
+                                        <div class="alert alert-info">
+                                            <p class="mb-0">${candidate['Espace Libre']}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                <button type="button" class="btn btn-success" onclick="exportCandidate('${candidate.ID}')">
+                                    <i class="fas fa-download"></i> Exporter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                const bsModal = new bootstrap.Modal(modal);
+                bsModal.show();
+                modal.addEventListener('hidden.bs.modal', () => {
+                    document.body.removeChild(modal);
+                });
+            }
+        }
+
+        // Exporter une candidature
+        function exportCandidate(candidateId) {
+            const candidate = candidatesData.find(c => c.ID == candidateId);
+            if (candidate) {
+                const data = {
+                    ID: candidate.ID,
+                    Nom: candidate.Nom,
+                    Email: candidate.Email,
+                    Téléphone: candidate.Téléphone,
+                    Université: candidate.Université,
+                    Âge: candidate.Âge,
+                    Niveau: candidate.Niveau,
+                    Motivation: candidate.Motivation,
+                    'Espace Libre': candidate['Espace Libre'],
+                    Appareil: candidate.Appareil,
+                    Date: candidate.Date
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `candidature_${candidate.Nom}_${candidate.ID}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        // Exporter toutes les candidatures
+        function exportAllCandidates() {
+            if (candidatesData.length === 0) {
+                alert('Aucune candidature à exporter');
+                return;
+            }
+            
+            const csvContent = [
+                // En-têtes
+                ['ID', 'Nom', 'Email', 'Téléphone', 'Université', 'Âge', 'Niveau', 'Motivation', 'Espace Libre', 'Date', 'Appareil'].join(','),
+                // Données
+                ...candidatesData.map(candidate => [
+                    candidate.ID,
+                    `"${candidate.Nom}"`,
+                    `"${candidate.Email}"`,
+                    `"${candidate.Téléphone}"`,
+                    `"${candidate.Université}"`,
+                    candidate.Âge,
+                    `"${candidate.Niveau}"`,
+                    `"${(candidate.Motivation || '').replace(/"/g, '""')}"`,
+                    `"${(candidate['Espace Libre'] || '').replace(/"/g, '""')}"`,
+                    `"${candidate.Date}"`,
+                    `"${candidate.Appareil}"`
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `candidatures_aiesec_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Mettre à jour les graphiques
+        function updateCharts() {
+            updateCandidatesChart();
+            updateDeviceChart();
+        }
+
+        // Graphique de tendance des candidatures (7 jours)
+        function updateCandidatesChart() {
+            const ctx = document.getElementById('candidatesChart').getContext('2d');
+            
+            // Grouper les candidatures par jour des 7 derniers jours
+            const last7Days = [];
+            const candidatesByDay = {};
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                last7Days.push(dateStr);
+                candidatesByDay[dateStr] = 0;
+            }
+            
+            candidatesData.forEach(candidate => {
+                const candidateDate = new Date(candidate.Date).toISOString().split('T')[0];
+                if (candidatesByDay.hasOwnProperty(candidateDate)) {
+                    candidatesByDay[candidateDate]++;
+                }
+            });
+            
+            if (chartInstances.candidatesChart) {
+                chartInstances.candidatesChart.destroy();
+            }
+            
+            chartInstances.candidatesChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: last7Days.map(date => new Date(date).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' })),
+                    datasets: [{
+                        label: 'Candidatures',
+                        data: last7Days.map(date => candidatesByDay[date]),
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            },
+                            ticks: {
+                                stepSize: 1
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Graphique en camembert pour les appareils
+        function updateDeviceChart() {
+            const ctx = document.getElementById('deviceChart').getContext('2d');
+            const mobile = candidatesData.filter(c => c.Appareil === 'mobile').length;
+            const desktop = candidatesData.filter(c => c.Appareil === 'desktop').length;
+            
+            if (chartInstances.deviceChart) {
+                chartInstances.deviceChart.destroy();
+            }
+            
+            chartInstances.deviceChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Mobile', 'Desktop'],
+                    datasets: [{
+                        data: [mobile, desktop],
+                        backgroundColor: ['#28a745', '#007bff'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+
+        // Mettre à jour la liste des universités (Top 5)
+        function updateUniversitiesList() {
+            const universitiesList = document.getElementById('universitiesList');
+            const universityCounts = {};
+            
+            candidatesData.forEach(candidate => {
+                const university = candidate.Université;
+                if (university && university.trim() !== '') {
+                    universityCounts[university] = (universityCounts[university] || 0) + 1;
+                }
+            });
+            
+            const sortedUniversities = Object.entries(universityCounts)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 5);
+            
+            universitiesList.innerHTML = '';
+            
+            if (sortedUniversities.length === 0) {
+                universitiesList.innerHTML = '<div class="text-muted text-center py-2" style="font-size: 0.8rem;">Aucune université</div>';
+                return;
+            }
+            
+            sortedUniversities.forEach(([university, count]) => {
+                const listItem = document.createElement('div');
+                listItem.className = 'list-group-item';
+                listItem.innerHTML = `
+                    <div class="university-item">
+                        <span style="font-size: 0.8rem;">${university.length > 20 ? university.substring(0, 20) + '...' : university}</span>
+                        <span class="university-count">${count}</span>
+                    </div>
+                `;
+                universitiesList.appendChild(listItem);
+            });
+        }
+
+        // Charger les messages de contact
+        async function loadContacts() {
+            try {
+                console.log('🔄 Chargement des messages de contact...');
+                
+                const response = await fetch(GOOGLE_SHEETS_API_CONTACTS);
+                const result = await response.json();
+                
+                if (result.success) {
+                    contactsData = result.data || [];
+                    updateContactsTable();
+                    console.log('✅ Messages de contact chargés:', contactsData.length);
+                } else {
+                    console.error('❌ Erreur:', result.message);
+                }
+            } catch (error) {
+                console.error('❌ Erreur de connexion aux contacts:', error);
+            }
+        }
+
+        // Mettre à jour le tableau des contacts
+        function updateContactsTable() {
+            const tbody = document.querySelector('#contactsTable tbody');
+            tbody.innerHTML = '';
+            
+            contactsData.forEach((contact, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${contact.Nom || '-'}</strong></td>
+                    <td><a href="mailto:${contact.Email}" class="text-decoration-none">${contact.Email || '-'}</a></td>
+                    <td><span class="text-truncate d-inline-block" style="max-width: 300px;" title="${contact.Message || ''}">${contact.Message || '-'}</span></td>
+                    <td><span class="badge ${contact.Appareil === 'Mobile' ? 'bg-success' : 'bg-primary'}">${contact.Appareil || '-'}</span></td>
+                    <td><small class="text-muted">${contact.Timestamp ? new Date(contact.Timestamp).toLocaleString('fr-FR') : '-'}</small></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewContactDetails(${index})" title="Voir détails">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            // Initialiser DataTable si pas déjà fait
+            if (!contactsTable) {
+                contactsTable = $('#contactsTable').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json'
+                    },
+                    pageLength: 25,
+                    order: [[4, 'desc']] // Trier par date décroissante
+                });
+            } else {
+                contactsTable.clear().rows.add($('#contactsTable tbody tr')).draw();
+            }
+        }
+
+        // Voir les détails d'un message de contact
+        function viewContactDetails(index) {
+            const contact = contactsData[index];
+            if (contact) {
+                const modal = document.createElement('div');
+                modal.className = 'modal fade';
+                modal.innerHTML = `
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title"><i class="fas fa-envelope"></i> Message de Contact</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-user text-primary"></i> Informations</h6>
+                                        <table class="table table-sm">
+                                            <tr><td><strong>Nom:</strong></td><td>${contact.Nom || '-'}</td></tr>
+                                            <tr><td><strong>Email:</strong></td><td><a href="mailto:${contact.Email}">${contact.Email || '-'}</a></td></tr>
+                                            <tr><td><strong>Appareil:</strong></td><td><span class="badge ${contact.Appareil === 'Mobile' ? 'bg-success' : 'bg-primary'}">${contact.Appareil || '-'}</span></td></tr>
+                                            <tr><td><strong>Date:</strong></td><td><small class="text-muted">${contact.Timestamp ? new Date(contact.Timestamp).toLocaleString('fr-FR') : '-'}</small></td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-info-circle text-info"></i> User Agent</h6>
+                                        <div class="alert alert-light" style="font-size: 0.85rem; max-height: 150px; overflow-y: auto;">
+                                            ${contact['User Agent'] || '-'}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <h6><i class="fas fa-comment text-success"></i> Message</h6>
+                                        <div class="alert alert-light" style="white-space: pre-wrap; max-height: 200px; overflow-y: auto;">
+                                            ${contact.Message || '-'}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="mailto:${contact.Email}?subject=Re: Votre message à AIESEC Carthage" class="btn btn-primary">
+                                    <i class="fas fa-reply"></i> Répondre par Email
+                                </a>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                const bsModal = new bootstrap.Modal(modal);
+                bsModal.show();
+                modal.addEventListener('hidden.bs.modal', () => {
+                    document.body.removeChild(modal);
+                });
+            }
+        }
+
+        // Gestionnaires d'événements
+        document.getElementById('refreshBtn').addEventListener('click', loadCandidates);
+        document.getElementById('refreshContactsBtn').addEventListener('click', loadContacts);
+        document.getElementById('exportAllBtn').addEventListener('click', exportAllCandidates);
+
+        // Charger les données au démarrage
+        loadCandidates();
+        loadContacts();
+        setInterval(() => {
+            loadCandidates();
+            loadContacts();
+        }, 30000); // Actualisation automatique toutes les 30 secondes
+
+        console.log('✅ Dashboard initialisé');
+    </script>
+</body>
+</html>
