@@ -170,38 +170,9 @@
 	};
 
 	var tabsOwl = function() {
-
-		// Initialize both carousels on page load
-		initialize_owl(jQuery('#owl1'));
-		initialize_owl(jQuery('#owl2'));
-
-		jQuery('a[href="#featured-news"]').on('shown.bs.tab', function () {
-			// Force destroy first to ensure clean initialization
-			destroy_owl(jQuery('#owl1'));
-			// Small delay to ensure destruction is complete
-			setTimeout(function() {
-				initialize_owl(jQuery('#owl1'));
-				console.log('Featured news carousel initialized');
-			}, 100);
-		}).on('hide.bs.tab', function () {
-	    destroy_owl(jQuery('#owl1'));
-		});
-
-		jQuery('a[href="#upcoming-events"]').on('shown.bs.tab', function () {
-			// Force destroy first to ensure clean initialization
-			destroy_owl(jQuery('#owl2'));
-			// Small delay to ensure destruction is complete
-			setTimeout(function() {
-				initialize_owl(jQuery('#owl2'));
-				console.log('Workshops carousel initialized');
-			}, 100);
-		}).on('hide.bs.tab', function () {
-	    destroy_owl(jQuery('#owl2'));
-		});
-
-
+		// Simple initialization for both carousels since they're both visible
+		
 		function initialize_owl(el) {
-			// Check if element exists and is not already initialized
 			if (el.length && !el.hasClass('owl-loaded')) {
 				console.log('Initializing carousel for:', el.attr('id'));
 				el.owlCarousel({
@@ -231,23 +202,14 @@
 						}
 					}
 				});
-			} else if (el.length && el.hasClass('owl-loaded')) {
-				console.log('Carousel already initialized for:', el.attr('id'));
-			} else {
-				console.log('Element not found for carousel initialization');
+				console.log('✓ Carousel initialized:', el.attr('id'));
 			}
 		}
 
-		// Make initialize_owl globally accessible
-		window.initialize_owl = initialize_owl;
-
-		function destroy_owl(el) {
-			if (el.length && el.hasClass('owl-loaded')) {
-				console.log('Destroying carousel for:', el.attr('id'));
-				el.trigger("destroy.owl.carousel");
-				el.find('.owl-stage-outer').children(':eq(0)').unwrap();
-			}
-		}
+		// Initialize both carousels on page load - no tabs needed
+		initialize_owl(jQuery('#owl1'));
+		initialize_owl(jQuery('#owl2'));
+		console.log('✓ All carousels initialized successfully');
 
 	}
 

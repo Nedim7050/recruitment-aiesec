@@ -1,4 +1,4 @@
-// Configuration
+// Configuration - Pour le formulaire de recrutement
 const GOOGLE_SHEETS_API = 'https://script.google.com/macros/s/AKfycbxo3a4Monbjv0Pg_UnCSKNNH54aFQjOHSc2IEEreyMsXJBecTQEy4s83IRWdFblPD3g/exec';
 
 // Fonction de test de connectivité

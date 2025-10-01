@@ -659,6 +659,51 @@ section .container {
   color: #037EF3;
 }
 
+/* Force visibility of both carousels */
+.tab-content .tab-pane {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tab-content .tab-pane.active {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Ensure owl carousel items are visible */
+#owl1, #owl2 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+}
+
+#owl1 .item, #owl2 .item {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Force owl carousel wrapper to display */
+.owl-carousel .owl-stage-outer {
+  position: relative !important;
+  overflow: hidden !important;
+  display: block !important;
+}
+
+.owl-carousel .owl-stage {
+  position: relative !important;
+  display: flex !important;
+}
+
+.owl-carousel .owl-item {
+  position: relative !important;
+  display: block !important;
+  float: left !important;
+}
+
 /* Leadership Journey - Modern Design */
 .journey {
   display: flex;
