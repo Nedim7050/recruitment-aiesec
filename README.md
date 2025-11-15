@@ -364,11 +364,11 @@ SOFTWARE.
 
 ## 📞 Contact
 
-**AIESEC Carthage**
+**Nedim Mejri**
 
-- **Email**: carthagetm@gmail.com
-- **Phone**: +216 98 521 185 | +216 95 465 480 | +216 95 504 055
-- **Website**: [AIESEC Carthage](https://aiesec-carthage.vercel.app)
+- **Email**: [Contact me via GitHub](https://github.com/Nedim7050)
+- **GitHub**: [@Nedim7050](https://github.com/Nedim7050)
+- **Project Website**: [AIESEC Carthage](https://aiesec-carthage.vercel.app)
 
 ---
 
